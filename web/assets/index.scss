@@ -1,0 +1,14 @@
+.leftSideBar {
+  .content {
+    .MuiTabs-scroller {
+      padding-top: 40px;
+      .MuiButtonBase-root {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+.childSection {
+  padding-top: 40px;
+}

@@ -1,0 +1,52 @@
+.App {
+  background: #364159;
+  height: 100vh;
+  display: flex;
+  gap: 20px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+.leftSideBar,
+.rightSideBar {
+  flex: 3;
+  height: 100%;
+}
+
+.leftSideBar .content,
+.rightSideBar .content {
+  flex: 5;
+  margin: 40px 0;
+  background-color: #f2f2f2;
+  height: calc(100% - 80px);
+  border-radius: 10px;
+}
+
+.section {
+  flex: 10;
+}
+
+.leftSideBar {
+  margin-left: 40px;
+}
+
+.rightSideBar {
+  margin-right: 40px;
+}
+
+.fc.fc-media-screen {
+  height: 100%;
+  background: rgb(251, 251, 249);
+}
+
+.fc.fc-media-screen .fc-header-toolbar {
+  margin: 0;
+  padding: 15px;
+}
