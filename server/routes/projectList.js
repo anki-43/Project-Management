@@ -10,10 +10,10 @@ const {
 
 const router = new Router();
 
-router.get("/proj/projectList", getAllProjectList);
-router.get("/proj/project", getProject);
-router.post("/proj/updateProject", updateProject);
-router.post("/proj/createProject", createProject);
-router.delete("/proj/deleteProject", deleteProject);
+router.get("/projectList", getAllProjectList);
+router.get("/project", getProject);
+router.post("/updateProject", updateProject);
+router.post("/createProject", createProject);
+router.delete("/deleteProject", deleteProject);
 
 module.exports = router;

@@ -1,17 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+const formidable = require("formidable");
 const app = express();
 
 const sequelize = require("./utils/database");
 
 app.use(cors());
 
-const router = require("./routes/projectList");
+const projectRouter = require("./routes/projectList");
+const uploadFileRouter = require("./routes/formidableRoute");
 
 // /middleware to pass json in request body
 app.use(express.json());
 
-app.use(router);
+app.use("/proj", projectRouter);
+app.use("/file", uploadFileRouter);
 
 sequelize.sync().then(
   (res) => {
