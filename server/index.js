@@ -15,7 +15,7 @@ app.use(router);
 
 sequelize.sync().then(
   (res) => {
-    console.log("res is", res);
+    console.log("success");
   },
   (err) => {
     console.log("err is", err);

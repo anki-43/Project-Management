@@ -20,7 +20,6 @@ export const projectStore = createSlice({
       state.updateMode = val.payload;
     },
     updateCurrentProjectValue: (state, val) => {
-      console.log(state.projectList);
       state.currentProject = val.payload;
     },
     deleteProject: (state, id) => {
@@ -28,12 +27,18 @@ export const projectStore = createSlice({
         return el.id !== id.payload;
       });
     },
-    saveProjectList: (state, projectList)=>{
-      state.projectList = projectList.payload
-    }
+    saveProjectList: (state, projectList) => {
+      state.projectList = projectList.payload;
+    },
   },
 });
 
-export const { addToProjectsList, changeUpdateMode, updateCurrentProjectValue, deleteProject, saveProjectList } = projectStore.actions;
+export const {
+  addToProjectsList,
+  changeUpdateMode,
+  updateCurrentProjectValue,
+  deleteProject,
+  saveProjectList,
+} = projectStore.actions;
 
 export default projectStore.reducer;

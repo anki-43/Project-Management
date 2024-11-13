@@ -1,0 +1,13 @@
+1) first make user APIs
+
+    -- registeruser API
+    -- login userAPI
+    -- logout user
+    -- me query(we will use it before)
+    -- use session storage and cookies as well
+
+2) an API that return the list of all users so that we can put them in team members
+
+3) for project Manager we will have 5 hard coded members.
+
+4) for now remove attachments.
