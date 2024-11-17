@@ -9,12 +9,14 @@ app.use(cors());
 
 const projectRouter = require("./routes/projectList");
 const uploadFileRouter = require("./routes/formidableRoute");
+const userRoutes = require("./routes/userRoutes");
 
 // /middleware to pass json in request body
 app.use(express.json());
 
 app.use("/proj", projectRouter);
 app.use("/file", uploadFileRouter);
+app.use("/user", userRoutes);
 
 sequelize.sync().then(
   (res) => {
