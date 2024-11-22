@@ -1,11 +1,10 @@
+const { response } = require("express");
 const User = require("../models/user");
-const { v4: uuidv4 } = require("uuid");
 
 const registerUser = async (req, res) => {
   try {
     if (req?.body?.username && req?.body?.email && req?.body?.password) {
       const user = await User.create({
-        // id: uuidv4(),
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
@@ -29,8 +28,35 @@ const getAllUsers = async (req, res) => {
   res.send(users);
 };
 
-const login = (req, res) => {
-  req.json({});
+const login = async (req, res) => {
+  try {
+    if (req?.body?.username && req?.body?.password) {
+      const user = await User.findOne({
+        where: {
+          username: req.body.username,
+        },
+      });
+
+      console.log("here", user);
+
+      if (user.password === req.body.password) {
+        res.send({
+          status: true,
+          user: user,
+        });
+      } else {
+        res.send({
+          status: false,
+          errorMessage: "wrong password",
+        });
+      }
+    }
+  } catch (err) {
+    res.send({
+      status: false,
+      errorMessage: err,
+    });
+  }
 };
 
 const logout = (req, res) => {

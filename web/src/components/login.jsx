@@ -20,12 +20,12 @@ import {
 import { useFormik, Field, Form, FieldArray, Formik } from "formik";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Login() {
   let [initialValues, setInitialValues] = useState({
     username: "",
     password: "",
-    confirmedpassword: "",
   });
 
   let [errorInSubmitForm, setErrorInSubmitForm] = useState(false);
@@ -34,7 +34,6 @@ function Login() {
     initialValues = {
       username: "",
       password: "",
-      confirmedpassword: "",
     };
     setErrorInSubmitForm(true);
     console.log(errorInSubmitForm);
@@ -53,19 +52,17 @@ function Login() {
                 <label htmlFor="password">Password</label>
                 <TextField id="password" name="password" placeholder="Enter password"></TextField>
               </Grid>
-              <Grid item xs={12} size={12} sx={{ display: "flex", flexDirection: "column", gap: 2, fontSize: 20 }}>
-                <label htmlFor="confirmedPassword">Confirm Password</label>
-                <TextField
-                  id="confirmedPassword"
-                  type="password"
-                  name="confirmedPassword"
-                  placeholder="Confirm Password"
-                ></TextField>
-              </Grid>
               <Grid item xs={12} sx={{ margin: "auto" }}>
                 <Button type="submit" variant="contained">
-                  Submit
+                  Login
                 </Button>
+                </Grid>
+                <Grid item xs={12} sx={{ margin: "auto" }}>
+                  <Link to={'/register'}>
+                    <Button  variant="contained">
+                      Register
+                    </Button>
+                  </Link>
               </Grid>
             </Grid>
           </Form>
@@ -73,7 +70,7 @@ function Login() {
         <Box>
           {errorInSubmitForm ? (
             <Alert severity="error">
-              Account doesn't exist. Please <a href="/createAccount">Create an Acoount</a>
+              Account doesn't exist. Please <a href="/register">Create an Acoount</a>
             </Alert>
           ) : (
             ""

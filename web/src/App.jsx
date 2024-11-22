@@ -5,15 +5,15 @@ import Calendar from "./components/sectionComponents/calendar.jsx";
 import Activity from "./components/sectionComponents/activity.jsx";
 import CreateProject from "./components/createProject.jsx";
 import Login from "./components/login.jsx";
-import CreateAccount from "./components/createAccount.jsx";
 import DetailView from "./components/detailsView.jsx";
+import Registeruser from "./components/registerUser.jsx";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Login />}></Route>
-        <Route path="/createAccount" element={<CreateAccount />}></Route>
+        <Route path="/register" element={<Registeruser />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/calendar" element={<Calendar />}></Route>
         <Route path="/history" element={<Activity />}></Route>
