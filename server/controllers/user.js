@@ -29,20 +29,33 @@ const getAllUsers = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log(req.body);
   try {
     if (req?.body?.username && req?.body?.password) {
-      const user = await User.findOne({
+      console.log(req.body, "here");
+      let user = await User.findOne({
         where: {
           username: req.body.username,
         },
       });
+
+      if (!user) {
+        user = await User.findOne({
+          where: {
+            email: req.body.username,
+          },
+        });
+      }
 
       console.log("here", user);
 
       if (user.password === req.body.password) {
         res.send({
           status: true,
-          user: user,
+          user: {
+            username: user.username,
+            email: user.email,
+          },
         });
       } else {
         res.send({

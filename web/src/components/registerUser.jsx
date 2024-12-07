@@ -32,7 +32,7 @@ import {
   
     let [errorInSubmitForm, setErrorInSubmitForm] = useState(false);
   
-    const submitLoginForm = () => {
+    const submitRegisterForm = () => {
       initialValues = {
         username: "",
         email: '',
@@ -45,7 +45,7 @@ import {
     return (
       <div className="App">
         <Box sx={{ background: "white", margin: "auto", marginBottom: "20%", width: "30%" }}>
-          <Formik initialValues={initialValues} onSubmit={() => submitLoginForm(initialValues)}>
+          <Formik initialValues={initialValues} onSubmit={() => submitRegisterForm(initialValues)}>
             <Form>
               <Grid container spacing={2} sx={{ padding: 8 }}>
                 <Grid item xs={12} size={12} sx={{ display: "flex", flexDirection: "column", gap: 2, fontSize: 20 }}>
@@ -71,11 +71,9 @@ import {
                 </Grid>
                 
                 <Grid item xs={12} sx={{ margin: "auto" }}>
-                  <Link to={'/register'}>
                     <Button type="submit" variant="contained">
                         Register
                     </Button>
-                  </Link>
                 </Grid>
 
               </Grid>
