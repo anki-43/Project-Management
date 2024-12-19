@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { changeActiveTabname } from "../features/mainTabs/mainTabsStore";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
+import { me } from "../authenticate";
 
 function LeftSideBar() {
   const value = useSelector((state) => state.mainTabsStore.tabName);
@@ -28,7 +29,7 @@ function LeftSideBar() {
     },
   ];
 
-  const user = useSelector((state)=> state.mainTabsStore.loggedInUser)
+  const user = me();
 
   return (
     <div className="leftSideBar">

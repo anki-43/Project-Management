@@ -2,6 +2,7 @@ const { response } = require("express");
 const User = require("../models/user");
 
 const registerUser = async (req, res) => {
+  console.log("1");
   try {
     if (req?.body?.username && req?.body?.email && req?.body?.password) {
       const user = await User.create({
@@ -9,7 +10,7 @@ const registerUser = async (req, res) => {
         username: req.body.username,
         password: req.body.password,
       });
-      console.log(user);
+      req.session.userId = user.id;
       res.send({
         status: true,
         message: "user created succesfully",
@@ -29,10 +30,8 @@ const getAllUsers = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log(req.body);
   try {
     if (req?.body?.username && req?.body?.password) {
-      console.log(req.body, "here");
       let user = await User.findOne({
         where: {
           username: req.body.username,
@@ -47,9 +46,8 @@ const login = async (req, res) => {
         });
       }
 
-      console.log("here", user);
-
       if (user.password === req.body.password) {
+        req.session.userId = user.id;
         res.send({
           status: true,
           user: {
@@ -73,11 +71,36 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  req.json({});
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send({ message: "Logout failed" });
+    }
+    res.clearCookie("connect.sid"); // Clear session cookie
+    res.status(200).send({ message: "Logout successful" });
+  });
 };
 
-const me = (req, res) => {
-  req.json({});
+const me = async (req, res) => {
+  if (!req.session.userId) {
+    res.send({
+      status: false,
+      user: null,
+    });
+  } else {
+    let user = await User.findOne({
+      where: {
+        id: req.session.userId,
+      },
+    });
+
+    res.send({
+      status: true,
+      user: {
+        username: user.username,
+        email: user.email,
+      },
+    });
+  }
 };
 
 module.exports = {

@@ -1,22 +1,48 @@
 const express = require("express");
 const cors = require("cors");
 const formidable = require("formidable");
+
+const session = require("express-session");
+const Redis = require("ioredis");
+const { RedisStore } = require("connect-redis");
 const app = express();
 
 const sequelize = require("./utils/database");
 
 app.use(cors());
 
+const redis = new Redis({});
+
+redis.on("connect", () => console.log("Connected to Redis!"));
+redis.on("error", (err) => console.log("Redis Client Error", err));
+
+app.use(
+  session({
+    store: new RedisStore({
+      client: redis,
+      disableTouch: true,
+    }),
+    secret: "pit_rediskey",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
+
+const userRoutes = require("./routes/userRoutes");
 const projectRouter = require("./routes/projectList");
 const uploadFileRouter = require("./routes/formidableRoute");
-const userRoutes = require("./routes/userRoutes");
 
 // /middleware to pass json in request body
 app.use(express.json());
 
-app.use("/proj", projectRouter);
-app.use("/file", uploadFileRouter);
 app.use("/user", userRoutes);
+// app.use("/proj", projectRouter);
+// app.use("/file", uploadFileRouter);
 
 sequelize.sync().then(
   (res) => {

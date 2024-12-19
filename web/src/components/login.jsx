@@ -23,7 +23,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setLoggedInUser } from "../features/mainTabs/mainTabsStore";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -34,6 +33,7 @@ function Login() {
 
   let [errorInSubmitForm, setErrorInSubmitForm] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   async function loginUser(payload) {
     try {
@@ -44,9 +44,9 @@ function Login() {
           password: payload.password
         }
       );
-      dispatch(setLoggedInUser(response.data.user));
-      const navigate = useNavigate();
-      navigate("/home");
+      if(response){
+        navigate("/home");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -55,14 +55,14 @@ function Login() {
   const submitLoginForm = (payload) => {
     loginUser(payload);
   };
+  
   return (
     <div className="App">
       <Box
         sx={{
           background: "white",
           margin: "auto",
-          marginBottom: "20%",
-          width: "30%",
+          borderRadius: 3
         }}
       >
         <Formik
@@ -108,6 +108,7 @@ function Login() {
                   <label htmlFor="password">Password</label>
                   <TextField
                     value={values.password}
+                    type="password"
                     onChange={handleChange}
                     id="password"
                     name="password"

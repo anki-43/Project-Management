@@ -7,8 +7,11 @@ const {
   createProject,
   deleteProject,
 } = require("../controllers/proejctListAPILogic");
+const authenticate = require("../middlewares/authenticate");
 
 const router = new Router();
+
+router.use(authenticate);
 
 router.get("/projectList", getAllProjectList);
 router.get("/project", getProject);

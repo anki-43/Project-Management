@@ -7,13 +7,17 @@ const {
   logout,
   me,
 } = require("../controllers/user");
+const authenticate = require("../middlewares/authenticate");
 
 const router = new Router();
 
 router.post("/register", registerUser);
-router.get("/getAllUsers", getAllUsers);
 router.post("/login", login);
+
+router.use(authenticate);
+
+router.get("/me", me);
 router.post("/logout", logout);
-router.post("/me", me);
+router.get("/getAllUsers", getAllUsers);
 
 module.exports = router;
