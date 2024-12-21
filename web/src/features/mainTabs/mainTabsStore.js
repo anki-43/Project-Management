@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const mainTabsStore = createSlice({
   name: "tabsStore",
   initialState: {
-    tabName: "todoList",
+    tabName: 0,
   },
   reducers: {
     changeActiveTabname: (state, val) => {

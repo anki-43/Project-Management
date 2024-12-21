@@ -95,18 +95,18 @@ function AppForm() {
       ...currentObj,
       startDate: dayjs(currentObj.startDate),
       endDate: dayjs(currentObj.endDate),
-      milestones: currentObj.milestones.map((el) => {
+      milestones: currentObj.milestones ? currentObj.milestones.map((el) => {
         return {
           ...el,
           dueDate: dayjs(el.dueDate),
         };
-      }),
-      tasks: currentObj.tasks.map((el) => {
+      }) : [],
+      tasks: currentObj.tasks ? currentObj.tasks.map((el) => {
         return {
           ...el,
           dueDate: dayjs(el.dueDate),
         };
-      }),
+      }) : [],
     };
     return formObj;
   });

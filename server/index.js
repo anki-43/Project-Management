@@ -9,7 +9,12 @@ const app = express();
 
 const sequelize = require("./utils/database");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend's URL
+    credentials: true, // Allow cookies or credentials
+  })
+);
 
 const redis = new Redis({});
 
@@ -41,8 +46,8 @@ const uploadFileRouter = require("./routes/formidableRoute");
 app.use(express.json());
 
 app.use("/user", userRoutes);
-// app.use("/proj", projectRouter);
-// app.use("/file", uploadFileRouter);
+app.use("/proj", projectRouter);
+app.use("/file", uploadFileRouter);
 
 sequelize.sync().then(
   (res) => {

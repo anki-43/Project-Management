@@ -25,6 +25,10 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+// Set withCredentials to true for all requests
+
+axios.defaults.withCredentials = true;
+
 function Login() {
   let initialValues = {
     username: '',
@@ -44,8 +48,10 @@ function Login() {
           password: payload.password
         }
       );
-      if(response){
+      if(response.data.status){
         navigate("/home");
+      }else{
+        setErrorInSubmitForm(true)
       }
     } catch (error) {
       console.error(error);

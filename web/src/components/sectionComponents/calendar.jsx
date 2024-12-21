@@ -11,7 +11,7 @@ function Calendar() {
   return (
     <div className="App">
       <LeftSideBar></LeftSideBar>
-      <Box sx={{ flex: 10, padding: 5 }}>
+      <Box sx={{ flex: 10, paddingY: 5, marginRight: 2}}>
         <CalendarInstance></CalendarInstance>
       </Box>
     </div>

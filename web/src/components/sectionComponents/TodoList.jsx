@@ -8,6 +8,7 @@ import { useMyContext } from "../../MyContext.jsx";
 import { updateCurrentProjectValue, deleteProject, saveProjectList } from "../../features/projectDetails/projectStore.js";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function ProjectCard({ project }) {
   return (
@@ -31,9 +32,8 @@ function ProjectCard({ project }) {
 const TodoList = (props) => {
   const dispatch = useDispatch();
   const fetchList = async () => {
-    const response = await fetch("http://localhost:8081/proj/projectList");
-    const projectList = await response.json();
-    dispatch(saveProjectList(projectList))
+    const response = await axios.get("http://localhost:8081/proj/projectList");
+    dispatch(saveProjectList(response.data))
   };
   useEffect(()=>{
     fetchList();
