@@ -1,23 +1,42 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Card, CardContent, Typography, List, ListItem, ListItemText, Divider, Box, IconButton, CircularProgress } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Box,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useMyContext } from "../../MyContext.jsx";
-import { updateCurrentProjectValue, deleteProject, saveProjectList } from "../../features/projectDetails/projectStore.js";
+import {
+  updateCurrentProjectValue,
+  deleteProject,
+  saveProjectList,
+} from "../../features/projectDetails/projectStore.js";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 function ProjectCard({ project }) {
   return (
-    <Card className="childSection">
+    <Card>
       <CardContent>
         <Typography variant="h4">{project.projectName}</Typography>
         <Typography variant="body1">{project.description}</Typography>
-        <Typography variant="h6">Project Manager: {project.projectManager.join(", ")}</Typography>
-        <Typography variant="h6">Team Members: {project.teamMembers.join(", ")}</Typography>
+        <Typography variant="h6">
+          Project Manager: {project.projectManager.join(", ")}
+        </Typography>
+        <Typography variant="h6">
+          Team Members: {project.teamMembers.join(", ")}
+        </Typography>
         <Typography variant="h6">Budget: ${project.budget}</Typography>
         <Typography variant="h6">
           Duration: {new Date(project.startDate).toLocaleDateString()} to{" "}
@@ -33,25 +52,23 @@ const TodoList = (props) => {
   const dispatch = useDispatch();
   const fetchList = async () => {
     const response = await axios.get("http://localhost:8081/proj/projectList");
-    dispatch(saveProjectList(response.data))
+    dispatch(saveProjectList(response.data));
   };
-  useEffect(()=>{
+  useEffect(() => {
     fetchList();
-  }, [])
+  }, []);
   const projectList = useSelector((state) => state.projectStore.projectList);
   return (
     <Grid container spacing={2} sx={{ mr: 2 }}>
-      { 
-      !projectList?.length 
-      ? 
-        <CircularProgress sx={{margin: 'auto' }}>
-        </CircularProgress> 
-      : 
-      projectList.map((project) => (
-        <Grid item xs={12} sm={6} md={4} size={6} key={project.id}>
-          <ProjectCard project={project} />
-        </Grid>
-      ))}
+      {!projectList?.length ? (
+        <CircularProgress sx={{ margin: "auto" }}></CircularProgress>
+      ) : (
+        projectList.map((project) => (
+          <Grid item xs={12} sm={6} md={4} size={6} key={project.id}>
+            <ProjectCard project={project} />
+          </Grid>
+        ))
+      )}
     </Grid>
   );
 };
@@ -83,11 +100,11 @@ const Footer = (props) => {
       <IconButton aria-label="edit" onClick={() => openProjectfromFooter()}>
         <EditIcon />
       </IconButton>
-     <Link to={'/detailView/' + props.project.id} key={'detailView'}>
-     <IconButton aria-label="view">
-        <VisibilityIcon />
-      </IconButton>
-     </Link>
+      <Link to={"/detailView/" + props.project.id} key={"detailView"}>
+        <IconButton aria-label="view">
+          <VisibilityIcon />
+        </IconButton>
+      </Link>
       <IconButton
         aria-label="delete"
         onClick={() => {

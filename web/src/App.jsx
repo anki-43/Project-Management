@@ -7,6 +7,8 @@ import CreateProject from "./components/createProject.jsx";
 import Login from "./components/login.jsx";
 import DetailView from "./components/detailsView.jsx";
 import Registeruser from "./components/registerUser.jsx";
+import CommonHeader from "./components/sectionComponents/commonHeader.jsx";
+import { Box } from "@mui/material";
 
 function App() {
   return (
@@ -27,8 +29,13 @@ function App() {
 function Home() {
   return (
     <div className="App">
-      <LeftSideBar></LeftSideBar>
-      <Section></Section>
+      <Box sx={{ padding: "20px 0 0 40px", flex: 1 }}>
+        <CommonHeader className="headerClass"></CommonHeader>
+      </Box>
+      <Box sx={{ display: "flex", gap: "20px", flex: 9, height: "90vh" }}>
+        <LeftSideBar></LeftSideBar>
+        <Section></Section>
+      </Box>
     </div>
   );
 }

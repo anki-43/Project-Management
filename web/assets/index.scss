@@ -4,23 +4,19 @@
       padding-top: 40px;
       .MuiButtonBase-root {
         max-width: 100%;
+        justify-content: start;
+        padding-left: 25%;
+        gap: 20px;
       }
     }
   }
 }
 
 .childSection {
-  padding-top: 40px;
+  margin: 20px 0;
+  height: calc(100% - 80px);
 }
 
-.fc.fc-media-screen{
+.fc.fc-media-screen {
   border-radius: 10px;
-  // table{
-  //   border: none;
-  // }
-  // .fc-scrollgrid-section.fc-scrollgrid-section-body{
-  //   td{
-  //     border: none;
-  //   }
-  // }
 }

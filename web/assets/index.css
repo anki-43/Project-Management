@@ -2,7 +2,7 @@
   background: #364159;
   height: 100vh;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
 }
 
 * {
@@ -14,18 +14,14 @@ body {
   overflow: hidden;
 }
 
-.leftSideBar,
-.rightSideBar {
+.leftSideBar {
   flex: 3;
-  height: 100%;
 }
 
-.leftSideBar .content,
-.rightSideBar .content {
+.leftSideBar .content {
   flex: 5;
-  margin: 40px 0;
   background-color: #f2f2f2;
-  height: calc(100% - 80px);
+  height: 100%;
   border-radius: 10px;
 }
 
@@ -34,11 +30,7 @@ body {
 }
 
 .leftSideBar {
-  margin-left: 40px;
-}
-
-.rightSideBar {
-  margin-right: 40px;
+  margin: 20px 0 20px 40px;
 }
 
 .fc.fc-media-screen {
@@ -49,4 +41,8 @@ body {
 .fc.fc-media-screen .fc-header-toolbar {
   margin: 0;
   padding: 15px;
+}
+
+.headerClass {
+  padding: 20px 40px 0;
 }

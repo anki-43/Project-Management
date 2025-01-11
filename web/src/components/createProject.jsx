@@ -33,7 +33,10 @@ import dayjs from "dayjs";
 
 function CreateProject() {
   return (
-    <div className="childSection" style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div
+      className="childSection"
+      style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
+    >
       <Formheader></Formheader>
       <AppForm></AppForm>
     </div>
@@ -43,8 +46,15 @@ function CreateProject() {
 function Formheader() {
   const { handleOpenProject } = useMyContext();
   return (
-    <Toolbar sx={{ background: "#f2f2f2", borderRadius: "4px", mr: 3, ml: 3, mb: 3 }}>
-      <IconButton edge="start" color="inherit" onClick={() => handleOpenProject(false, false)} aria-label="back">
+    <Toolbar
+      sx={{ background: "#f2f2f2", borderRadius: "4px", mr: 3, ml: 3, mb: 3 }}
+    >
+      <IconButton
+        edge="start"
+        color="inherit"
+        onClick={() => handleOpenProject(false, false)}
+        aria-label="back"
+      >
         <ArrowBackIcon />
       </IconButton>
       <Typography variant="h5" style={{ flexGrow: 1 }}>
@@ -79,7 +89,17 @@ const initialValues = {
   teamMembers: [""],
   budget: "",
   milestones: [{ id: uuidv4(), name: "", dueDate: null, status: "" }],
-  tasks: [{ id: uuidv4(), name: "", description: "", assignedTo: "", dueDate: null, priority: "", status: "" }],
+  tasks: [
+    {
+      id: uuidv4(),
+      name: "",
+      description: "",
+      assignedTo: "",
+      dueDate: null,
+      priority: "",
+      status: "",
+    },
+  ],
   risks: [{ id: uuidv4(), description: "", impact: "", mitigationPlan: "" }],
   attachments: [],
 };
@@ -95,18 +115,22 @@ function AppForm() {
       ...currentObj,
       startDate: dayjs(currentObj.startDate),
       endDate: dayjs(currentObj.endDate),
-      milestones: currentObj.milestones ? currentObj.milestones.map((el) => {
-        return {
-          ...el,
-          dueDate: dayjs(el.dueDate),
-        };
-      }) : [],
-      tasks: currentObj.tasks ? currentObj.tasks.map((el) => {
-        return {
-          ...el,
-          dueDate: dayjs(el.dueDate),
-        };
-      }) : [],
+      milestones: currentObj.milestones
+        ? currentObj.milestones.map((el) => {
+            return {
+              ...el,
+              dueDate: dayjs(el.dueDate),
+            };
+          })
+        : [],
+      tasks: currentObj.tasks
+        ? currentObj.tasks.map((el) => {
+            return {
+              ...el,
+              dueDate: dayjs(el.dueDate),
+            };
+          })
+        : [],
     };
     return formObj;
   });
@@ -116,7 +140,15 @@ function AppForm() {
   const { handleOpenProject } = useMyContext();
 
   return (
-    <Container component="main" sx={{ width: "100%", height: "100%", overflowY: "auto" }}>
+    <Container
+      component="main"
+      sx={{
+        width: "100%",
+        height: "100%",
+        overflowY: "auto",
+        maxWidth: "none !important",
+      }}
+    >
       <Paper sx={{ padding: 3 }}>
         <Formik
           initialValues={updateMode ? currentProject : initialValues}
@@ -146,7 +178,12 @@ function AppForm() {
             <Form>
               <Grid container spacing={2}>
                 <Grid item xs={12} size={12}>
-                  <Field as={TextField} label="Project Name" name="projectName" fullWidth />
+                  <Field
+                    as={TextField}
+                    label="Project Name"
+                    name="projectName"
+                    fullWidth
+                  />
                 </Grid>
                 <Grid item xs={6} size={6}>
                   <Field name="startDate">
@@ -156,8 +193,12 @@ function AppForm() {
                           sx={{ width: "100%" }}
                           label="Start Date"
                           value={field.value}
-                          onChange={(date) => form.setFieldValue("startDate", date)}
-                          renderInput={(params) => <TextField {...params} fullWidth />}
+                          onChange={(date) =>
+                            form.setFieldValue("startDate", date)
+                          }
+                          renderInput={(params) => (
+                            <TextField {...params} fullWidth />
+                          )}
                         />
                       </LocalizationProvider>
                     )}
@@ -171,8 +212,12 @@ function AppForm() {
                           sx={{ width: "100%" }}
                           label="End Date"
                           value={field.value}
-                          onChange={(date) => form.setFieldValue("endDate", date)}
-                          renderInput={(params) => <TextField {...params} fullWidth />}
+                          onChange={(date) =>
+                            form.setFieldValue("endDate", date)
+                          }
+                          renderInput={(params) => (
+                            <TextField {...params} fullWidth />
+                          )}
                         />
                       </LocalizationProvider>
                     )}
@@ -181,7 +226,11 @@ function AppForm() {
                 <Grid item xs={12} size={6}>
                   <FormControl fullWidth>
                     <InputLabel>Project Manager</InputLabel>
-                    <Field as={Select} name="projectManager" label="Project Manager">
+                    <Field
+                      as={Select}
+                      name="projectManager"
+                      label="Project Manager"
+                    >
                       {projectManagers.map((manager) => (
                         <MenuItem key={manager} value={manager}>
                           {manager}
@@ -194,7 +243,12 @@ function AppForm() {
                   <FormGroup>
                     <FormControl fullWidth>
                       <InputLabel>Team Members</InputLabel>
-                      <Field as={Select} name="teamMembers" multiple label="Team Members">
+                      <Field
+                        as={Select}
+                        name="teamMembers"
+                        multiple
+                        label="Team Members"
+                      >
                         {teamMembers.map((member) => (
                           <MenuItem key={member} value={member}>
                             {member}
@@ -205,10 +259,23 @@ function AppForm() {
                   </FormGroup>
                 </Grid>
                 <Grid item xs={12} size={6}>
-                  <Field as={TextField} label="Budget" name="budget" fullWidth type="number" />
+                  <Field
+                    as={TextField}
+                    label="Budget"
+                    name="budget"
+                    fullWidth
+                    type="number"
+                  />
                 </Grid>
                 <Grid item xs={12} size={12}>
-                  <Field as={TextField} label="Description" name="description" fullWidth multiline rows={4} />
+                  <Field
+                    as={TextField}
+                    label="Description"
+                    name="description"
+                    fullWidth
+                    multiline
+                    rows={4}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <FieldArray name="milestones">
@@ -216,14 +283,26 @@ function AppForm() {
                       <div>
                         <Button
                           startIcon={<AddCircleIcon />}
-                          onClick={() => push({ id: uuidv4(), name: "", dueDate: null, status: "" })}
+                          onClick={() =>
+                            push({
+                              id: uuidv4(),
+                              name: "",
+                              dueDate: null,
+                              status: "",
+                            })
+                          }
                           variant="outlined"
                           sx={{ mb: 2 }}
                         >
                           Add Milestone
                         </Button>
                         {values.milestones.map((milestone, index) => (
-                          <Grid container spacing={2} key={milestone.id} sx={{ mb: 2 }}>
+                          <Grid
+                            container
+                            spacing={2}
+                            key={milestone.id}
+                            sx={{ mb: 2 }}
+                          >
                             <Grid item xs={12} size={12}>
                               <Field
                                 as={TextField}
@@ -235,23 +314,41 @@ function AppForm() {
                             <Grid item xs={6} size={6}>
                               <Field name={`milestones[${index}].dueDate`}>
                                 {({ field, form }) => (
-                                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                  >
                                     <DatePicker
                                       sx={{ width: "100%" }}
                                       label="Due Date"
                                       value={field.value}
-                                      onChange={(date) => form.setFieldValue(`milestones[${index}].dueDate`, date)}
-                                      renderInput={(params) => <TextField {...params} fullWidth />}
+                                      onChange={(date) =>
+                                        form.setFieldValue(
+                                          `milestones[${index}].dueDate`,
+                                          date
+                                        )
+                                      }
+                                      renderInput={(params) => (
+                                        <TextField {...params} fullWidth />
+                                      )}
                                     />
                                   </LocalizationProvider>
                                 )}
                               </Field>
                             </Grid>
                             <Grid item xs={6} size={6}>
-                              <Field as={TextField} label="Status" name={`milestones[${index}].status`} fullWidth />
+                              <Field
+                                as={TextField}
+                                label="Status"
+                                name={`milestones[${index}].status`}
+                                fullWidth
+                              />
                             </Grid>
                             <Grid item xs={12} size={12}>
-                              <Button color="error" onClick={() => remove(index)} variant="contained">
+                              <Button
+                                color="error"
+                                onClick={() => remove(index)}
+                                variant="contained"
+                              >
                                 Remove Milestone
                               </Button>
                             </Grid>
@@ -284,9 +381,19 @@ function AppForm() {
                           Add Task
                         </Button>
                         {values.tasks.map((task, index) => (
-                          <Grid container spacing={2} key={task.id} sx={{ mt: 2 }}>
+                          <Grid
+                            container
+                            spacing={2}
+                            key={task.id}
+                            sx={{ mt: 2 }}
+                          >
                             <Grid xs={12} size={12}>
-                              <Field as={TextField} label="Task Name" name={`tasks[${index}].name`} fullWidth />
+                              <Field
+                                as={TextField}
+                                label="Task Name"
+                                name={`tasks[${index}].name`}
+                                fullWidth
+                              />
                             </Grid>
                             <Grid xs={12} size={12}>
                               <Field
@@ -299,7 +406,11 @@ function AppForm() {
                             <Grid xs={12} size={6}>
                               <FormControl fullWidth>
                                 <InputLabel>Assigned To</InputLabel>
-                                <Field as={Select} name={`tasks[${index}].assignedTo`} label="Assigned To">
+                                <Field
+                                  as={Select}
+                                  name={`tasks[${index}].assignedTo`}
+                                  label="Assigned To"
+                                >
                                   {teamMembers.map((member) => (
                                     <MenuItem key={member} value={member}>
                                       {member}
@@ -311,23 +422,42 @@ function AppForm() {
                             <Grid xs={12} size={6}>
                               <Field name={`tasks[${index}].dueDate`}>
                                 {({ field, form }) => (
-                                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                  >
                                     <DatePicker
                                       sx={{ width: "100%" }}
                                       label="Due Date"
                                       value={field.value}
-                                      onChange={(date) => form.setFieldValue(`tasks[${index}].dueDate`, date)}
-                                      renderInput={(params) => <TextField {...params} fullWidth />}
+                                      onChange={(date) =>
+                                        form.setFieldValue(
+                                          `tasks[${index}].dueDate`,
+                                          date
+                                        )
+                                      }
+                                      renderInput={(params) => (
+                                        <TextField {...params} fullWidth />
+                                      )}
                                     />
                                   </LocalizationProvider>
                                 )}
                               </Field>
                             </Grid>
                             <Grid xs={12} size={6}>
-                              <Field as={TextField} label="Priority" name={`tasks[${index}].priority`} fullWidth />
+                              <Field
+                                as={TextField}
+                                label="Priority"
+                                name={`tasks[${index}].priority`}
+                                fullWidth
+                              />
                             </Grid>
                             <Grid xs={12} size={6}>
-                              <Field as={TextField} label="Status" name={`tasks[${index}].status`} fullWidth />
+                              <Field
+                                as={TextField}
+                                label="Status"
+                                name={`tasks[${index}].status`}
+                                fullWidth
+                              />
                             </Grid>
                             <Grid xs={12} size={12}>
                               <Button
@@ -351,7 +481,14 @@ function AppForm() {
                       <div>
                         <Button
                           startIcon={<AddCircleIcon />}
-                          onClick={() => push({ id: uuidv4(), description: "", impact: "", mitigationPlan: "" })}
+                          onClick={() =>
+                            push({
+                              id: uuidv4(),
+                              description: "",
+                              impact: "",
+                              mitigationPlan: "",
+                            })
+                          }
                           variant="outlined"
                           sx={{ mb: 2 }}
                         >
@@ -405,7 +542,9 @@ function AppForm() {
                     <VisuallyHiddenInput
                       type="file"
                       multiple
-                      onChange={(event) => handleFileChange(event, setFieldValue)}
+                      onChange={(event) =>
+                        handleFileChange(event, setFieldValue)
+                      }
                     />
                   </Button>
                   {!!values.attachments.length &&
