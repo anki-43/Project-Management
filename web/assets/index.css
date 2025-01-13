@@ -16,6 +16,7 @@ body {
 
 .leftSideBar {
   flex: 3;
+  margin: 10px 0 20px 40px;
 }
 
 .leftSideBar .content {
@@ -23,14 +24,6 @@ body {
   background-color: #f2f2f2;
   height: 100%;
   border-radius: 10px;
-}
-
-.section {
-  flex: 10;
-}
-
-.leftSideBar {
-  margin: 20px 0 20px 40px;
 }
 
 .fc.fc-media-screen {
@@ -45,4 +38,9 @@ body {
 
 .headerClass {
   padding: 20px 40px 0;
+}
+
+.section {
+  flex: 10;
+  overflow-y: auto;
 }

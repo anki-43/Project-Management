@@ -18,7 +18,7 @@ function Section() {
       {openProjectState ? (
         <CreateProject> </CreateProject>
       ) : (
-        <div className="section" style={{ overflowY: "auto" }}>
+        <div className="section">
           <TodoList></TodoList>
         </div>
       )}

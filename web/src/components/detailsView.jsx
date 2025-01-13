@@ -1,9 +1,15 @@
 import { Box } from "@mui/material";
 import LeftSideBar from "./LeftSideBar";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
 function DetailView() {
-  const {id} = useParams()
+  const { id } = useParams();
+
+  const project = useSelector((state) =>
+    state.projectStore.projectList.find((el) => el.id == id)
+  );
+
   return (
     <div className="App">
       <LeftSideBar></LeftSideBar>
