@@ -44,11 +44,11 @@ async function seedDatabase() {
     console.log("Projects created!");
 
     // Add users to projects (Many-to-Many)
-    for (const project of projects) {
-      const randomUsers = faker.helpers.arrayElements(users, 3); // Pick 3 random users
-      await project.addTeamMembers(randomUsers);
-    }
-    console.log("Users added to projects!");
+    // for (const project of projects) {
+    //   const randomUsers = faker.helpers.arrayElements(users, 3); // Pick 3 random users
+    //   await project.addTeamMembers(randomUsers);
+    // }
+    // console.log("Users added to projects!");
 
     // Create milestones, tasks, and risks for each project
     for (const project of projects) {

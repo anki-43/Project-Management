@@ -25,20 +25,49 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useSelector, useDispatch } from "react-redux";
 import { addToProjectsList } from "../features/projectDetails/projectStore";
 import { useMyContext } from "../MyContext";
 import dayjs from "dayjs";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import CommonHeader from "./sectionComponents/commonHeader";
+import LeftSideBar from "./LeftSideBar";
+import axios from "axios";
 
-function CreateProject() {
+function CreateProject(props) {
+  const updateMode = useSelector((state) => state.projectStore.updateMode);
+  const [currentProject, setProject] = useState({});
+  if (updateMode) {
+    const location = useLocation();
+    const userData = location.state;
+    const { id } = props.id;
+
+    const fetchProject = async () => {
+      const response = await axios.post("http://localhost:8081/proj/project", {
+        id: id,
+      });
+      console.log(response);
+      setProject(response.data);
+    };
+
+    useEffect(() => {
+      fetchProject();
+    }, []);
+  }
+
   return (
-    <div
-      className="childSection"
-      style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
-    >
-      <Formheader></Formheader>
-      <AppForm></AppForm>
+    <div className="App">
+      <Box sx={{ padding: "10px 0 0 40px", flex: 1 }}>
+        <CommonHeader className="headerClass" />
+      </Box>
+      <Box sx={{ display: "flex", gap: "20px", flex: 9, height: "90vh" }}>
+        <LeftSideBar></LeftSideBar>
+        <Box className="section">
+          <Formheader></Formheader>
+          <AppForm currentProject={{ currentProject }}></AppForm>
+        </Box>
+      </Box>
     </div>
   );
 }
@@ -49,14 +78,16 @@ function Formheader() {
     <Toolbar
       sx={{ background: "#f2f2f2", borderRadius: "4px", mr: 3, ml: 3, mb: 3 }}
     >
-      <IconButton
-        edge="start"
-        color="inherit"
-        onClick={() => handleOpenProject(false, false)}
-        aria-label="back"
-      >
-        <ArrowBackIcon />
-      </IconButton>
+      <Link to={"/home"}>
+        <IconButton
+          edge="start"
+          color="inherit"
+          onClick={() => handleOpenProject(false, false)}
+          aria-label="back"
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Link>
       <Typography variant="h5" style={{ flexGrow: 1 }}>
         Create a Project
       </Typography>
@@ -101,44 +132,16 @@ const initialValues = {
     },
   ],
   risks: [{ id: uuidv4(), description: "", impact: "", mitigationPlan: "" }],
-  attachments: [],
 };
 
-function AppForm() {
-  const handleFileChange = (event, setFieldValue) => {
-    setFieldValue("attachments", [...event.target.files]);
-  };
-
-  const currentProject = useSelector((state) => {
-    let currentObj = state.projectStore.currentProject;
-    let formObj = {
-      ...currentObj,
-      startDate: dayjs(currentObj.startDate),
-      endDate: dayjs(currentObj.endDate),
-      milestones: currentObj.milestones
-        ? currentObj.milestones.map((el) => {
-            return {
-              ...el,
-              dueDate: dayjs(el.dueDate),
-            };
-          })
-        : [],
-      tasks: currentObj.tasks
-        ? currentObj.tasks.map((el) => {
-            return {
-              ...el,
-              dueDate: dayjs(el.dueDate),
-            };
-          })
-        : [],
-    };
-    return formObj;
-  });
+function AppForm(props) {
   const updateMode = useSelector((state) => state.projectStore.updateMode);
 
-  const dispatch = useDispatch();
-  const { handleOpenProject } = useMyContext();
-
+  const onSubmitForm = () => {
+    if (updateMode) {
+    } else {
+    }
+  };
   return (
     <Container
       component="main"
@@ -151,7 +154,7 @@ function AppForm() {
     >
       <Paper sx={{ padding: 3 }}>
         <Formik
-          initialValues={updateMode ? currentProject : initialValues}
+          initialValues={updateMode ? props.currentProject : initialValues}
           onSubmit={(values) => {
             let formObj = {
               ...values,
@@ -170,8 +173,7 @@ function AppForm() {
                 };
               }),
             };
-            dispatch(addToProjectsList(formObj));
-            handleOpenProject(false, false);
+            onSubmitForm(formObj);
           }}
         >
           {({ setFieldValue, values }) => (
@@ -530,30 +532,7 @@ function AppForm() {
                     )}
                   </FieldArray>
                 </Grid>
-                <Grid item xs={12} sx={{ width: "100%", textAlign: "center" }}>
-                  <Button
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    startIcon={<CloudUploadIcon />}
-                  >
-                    Upload files
-                    <VisuallyHiddenInput
-                      type="file"
-                      multiple
-                      onChange={(event) =>
-                        handleFileChange(event, setFieldValue)
-                      }
-                    />
-                  </Button>
-                  {!!values.attachments.length &&
-                    Array.from(values.attachments).map((file, index) => (
-                      <Box key={index} sx={{ marginTop: 1 }}>
-                        <Chip label={file.name} />
-                      </Box>
-                    ))}
-                </Grid>
+
                 <Grid item xs={12} sx={{ mt: 2 }}>
                   <Button type="submit" variant="contained">
                     Submit

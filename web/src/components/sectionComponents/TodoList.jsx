@@ -46,9 +46,15 @@ function ProjectCard({ project }) {
 
 const TodoList = (props) => {
   const dispatch = useDispatch();
+  let flag = true;
   const fetchList = async () => {
     const response = await axios.get("http://localhost:8081/proj/projectList");
-    dispatch(saveProjectList(response.data));
+    if (response.data.status) {
+      dispatch(saveProjectList(response.data.projects || []));
+      flag = true;
+    } else {
+      flag = true;
+    }
   };
   useEffect(() => {
     fetchList();
@@ -56,7 +62,7 @@ const TodoList = (props) => {
   const projectList = useSelector((state) => state.projectStore.projectList);
   return (
     <Grid container spacing={2} sx={{ mr: 2 }}>
-      {!projectList?.length ? (
+      {!flag ? (
         <CircularProgress sx={{ margin: "auto" }}></CircularProgress>
       ) : (
         projectList.map((project) => (
@@ -84,6 +90,8 @@ const Footer = (props) => {
     dispatch(deleteProject(id));
   };
 
+  const idData = { id: props.project.id };
+
   return (
     <Box
       display="flex"
@@ -93,9 +101,11 @@ const Footer = (props) => {
       bgcolor="#f5f5f5"
       borderTop="1px solid #ddd"
     >
-      <IconButton aria-label="edit" onClick={() => openProjectfromFooter()}>
-        <EditIcon />
-      </IconButton>
+      <Link to="/create" state={idData}>
+        <IconButton aria-label="edit">
+          <EditIcon />
+        </IconButton>
+      </Link>
       <Link to={"/detailView/" + props.project.id} key={"detailView"}>
         <IconButton aria-label="view">
           <VisibilityIcon />

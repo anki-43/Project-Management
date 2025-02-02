@@ -6,18 +6,20 @@ const User = require("./user");
 const Milestone = require("./milestone");
 const Task = require("./task");
 const Risk = require("./risk");
+const ProjectTeamMembers = require("./projectTeamMemebers");
 
 // Associations
 // Project and User: Many-to-Many
 Project.belongsToMany(User, {
   through: "ProjectTeamMembers",
-  as: "teamMembers",
   foreignKey: "projectId",
+  onDelete: "CASCADE",
 });
+
 User.belongsToMany(Project, {
   through: "ProjectTeamMembers",
-  as: "projects",
   foreignKey: "userId",
+  onDelete: "CASCADE",
 });
 
 // Project and Milestone: One-to-Many
@@ -40,4 +42,5 @@ module.exports = {
   Milestone,
   Task,
   Risk,
+  ProjectTeamMembers,
 };

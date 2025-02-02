@@ -31,9 +31,9 @@ axios.defaults.withCredentials = true;
 
 function Login() {
   let initialValues = {
-    username: '',
-    password: ''
-  }
+    username: "",
+    password: "",
+  };
 
   let [errorInSubmitForm, setErrorInSubmitForm] = useState(false);
   const dispatch = useDispatch();
@@ -41,17 +41,14 @@ function Login() {
 
   async function loginUser(payload) {
     try {
-      const response = await axios.post(
-        "http://localhost:8081/user/login",
-        {
-          username: payload.username,
-          password: payload.password
-        }
-      );
-      if(response.data.status){
+      const response = await axios.post("http://localhost:8081/user/login", {
+        username: payload.username,
+        password: payload.password,
+      });
+      if (response.data.status) {
         navigate("/home");
-      }else{
-        setErrorInSubmitForm(true)
+      } else {
+        setErrorInSubmitForm(true);
       }
     } catch (error) {
       console.error(error);
@@ -61,14 +58,14 @@ function Login() {
   const submitLoginForm = (payload) => {
     loginUser(payload);
   };
-  
+
   return (
     <div className="App">
       <Box
         sx={{
           background: "white",
           margin: "auto",
-          borderRadius: 3
+          borderRadius: 3,
         }}
       >
         <Formik

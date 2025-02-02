@@ -1,4 +1,11 @@
-const { Project, Risk, Milestone, Task } = require("../models/association");
+const {
+  Project,
+  Risk,
+  Milestone,
+  Task,
+  User,
+  ProjectTeamMembers,
+} = require("../models/association");
 
 const getAllProjectList = async (req, res) => {
   const projects = await Project.findAll({
@@ -17,7 +24,11 @@ const getAllProjectList = async (req, res) => {
       },
     ],
   });
-  res.send(projects.slice(0, 10));
+
+  res.json({
+    status: true,
+    projects: projects,
+  });
 };
 
 const getProject = async (req, res) => {
@@ -71,10 +82,22 @@ const deleteProject = (req, res) => {
   let projectId = req.body;
 };
 
+const getAllProjectTeamMembers = async (req, res) => {
+  const Members = await ProjectTeamMembers.findAll({
+    include: [
+      {
+        model: User,
+      },
+    ],
+  });
+  res.send(Members);
+};
+
 module.exports = {
   getAllProjectList,
   getProject,
   updateProject,
   createProject,
   deleteProject,
+  getAllProjectTeamMembers,
 };

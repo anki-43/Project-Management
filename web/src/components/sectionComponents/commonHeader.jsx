@@ -3,6 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useMyContext } from "../../MyContext";
+import { Link } from "react-router-dom";
 
 function CommonHeader() {
   const { handleOpenProject } = useMyContext();
@@ -20,15 +21,12 @@ function CommonHeader() {
         </Typography>
       </Box>
       <div className="headerButtons">
-        <Button
-          variant="contained"
-          slots={{ root: "span" }}
-          onClick={() => handleOpenProject(true, false)}
-        >
-          <AddIcon />
-          <span> New Task</span>
-        </Button>
-        <Button slots={{ root: "span" }}></Button>
+        <Link to={"/create"}>
+          <Button variant="contained">
+            <AddIcon />
+            <span> New Task</span>
+          </Button>
+        </Link>
       </div>
     </Box>
   );

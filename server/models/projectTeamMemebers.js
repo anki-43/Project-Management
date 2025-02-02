@@ -1,6 +1,8 @@
 const Sequelize = require("sequelize");
 const { v4: uuidv4 } = require("uuid");
 const sequelize = require("../utils/database");
+const { User } = require("./user");
+const { Project } = require("./project");
 
 const ProjectTeamMembers = sequelize.define("ProjectTeamMembers", {
   id: {
