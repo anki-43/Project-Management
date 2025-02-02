@@ -1,38 +1,74 @@
-const { projectList } = require("../db");
+const { Project, Risk, Milestone, Task } = require("../models/association");
 
-const getAllProjectList = (req, res) => {
-  res.json(projectList);
+const getAllProjectList = async (req, res) => {
+  const projects = await Project.findAll({
+    include: [
+      {
+        model: Milestone,
+        as: "milestones",
+      },
+      {
+        model: Task,
+        as: "tasks",
+      },
+      {
+        model: Risk,
+        as: "risks",
+      },
+    ],
+  });
+  res.send(projects.slice(0, 10));
 };
 
-const getProject = (req, res) => {
-  let projectId = req.body;
-  let project = projectList.find((el) => el.id === projectId);
-  req.json(project);
+const getProject = async (req, res) => {
+  let project = await Project.findOne({
+    where: {
+      id: req.body.id,
+    },
+    include: [
+      {
+        model: Milestone,
+        as: "milestones",
+      },
+      {
+        model: Task,
+        as: "tasks",
+      },
+      {
+        model: Risk,
+        as: "risks",
+      },
+    ],
+  });
+  console.log("project", project);
+  res.json(project);
 };
 
 const updateProject = (req, res) => {
-  let updatedProject = req.body;
+  let updatedProject = req.body.project;
   let projectId = req.body.id;
-
-  projectList = projectList.map((el) => {
-    if (el.id === projectId) {
-      return updatedProject;
-    }
-    return el;
-  });
 };
 
-const createProject = (req, res) => {
-  let newProject = req.body;
-  projectList = projectList.push(newProject);
+const createProject = async (req, res) => {
+  let newProject = req.body.project;
+  try {
+    if (req?.body?.project) {
+      const project = await Project.create();
+      res.send({
+        status: true,
+        message: "Project created succesfully",
+      });
+    }
+  } catch (err) {
+    res.send({
+      status: false,
+      erroeMessage: err,
+    });
+  }
 };
 
 const deleteProject = (req, res) => {
   let projectId = req.body;
-
-  projectList = projectList.filter((el) => {
-    return el.id === projectId;
-  });
 };
 
 module.exports = {

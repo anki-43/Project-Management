@@ -1,10 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require("../util/database");
+const sequelize = require("../utils/database");
+const Project = require("./project");
 
-const Task = sequelize.define("Task", {
+const Task = sequelize.define("task", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
+    autoIncrement: true, // Auto-increment for integers
     allowNull: false,
   },
   name: {
@@ -16,6 +18,7 @@ const Task = sequelize.define("Task", {
   },
   assignedTo: {
     type: Sequelize.STRING,
+    allowNull: true,
   },
   dueDate: {
     type: Sequelize.DATE,
@@ -26,10 +29,9 @@ const Task = sequelize.define("Task", {
   status: {
     type: Sequelize.STRING,
   },
+  projectId: { type: Sequelize.INTEGER, allowNull: false },
 });
 
-Task.associate = (models) => {
-  Task.belongsTo(models.Project, { foreignKey: "projectId" });
-};
+// Task.belongsTo(Project, { foreignKey: "projectId" });
 
 module.exports = Task;

@@ -1,10 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require("../util/database");
+const sequelize = require("../utils/database");
+const Project = require("./project");
 
-const Milestone = sequelize.define("Milestone", {
+const Milestone = sequelize.define("milestone", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
+    autoIncrement: true, // Auto-increment for integers
     allowNull: false,
   },
   name: {
@@ -17,10 +19,9 @@ const Milestone = sequelize.define("Milestone", {
   status: {
     type: Sequelize.STRING,
   },
+  projectId: { type: Sequelize.INTEGER, allowNull: false },
 });
 
-Milestone.associate = (models) => {
-  Milestone.belongsTo(models.Project, { foreignKey: "projectId" });
-};
+// Milestone.belongsTo(Project, { as: "projects", foreignKey: "projectId" });
 
 module.exports = Milestone;

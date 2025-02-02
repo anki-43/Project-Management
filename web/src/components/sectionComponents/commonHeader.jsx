@@ -8,11 +8,23 @@ function CommonHeader() {
   const { handleOpenProject } = useMyContext();
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between", flex: 1 }}>
-      <Typography variant="h3" sx={{ color: "white" }}>
-        Project List
-      </Typography>
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <img
+          src="../../../assets/images/logo.png"
+          alt="logo image"
+          height="50px"
+          style={{ borderRadius: "8px" }}
+        />
+        <Typography variant="h3" sx={{ color: "white" }}>
+          Project List
+        </Typography>
+      </Box>
       <div className="headerButtons">
-        <Button variant="contained" slots={{ root: "span" }} onClick={() => handleOpenProject(true, false)}>
+        <Button
+          variant="contained"
+          slots={{ root: "span" }}
+          onClick={() => handleOpenProject(true, false)}
+        >
           <AddIcon />
           <span> New Task</span>
         </Button>

@@ -1,5 +1,5 @@
 const { response } = require("express");
-const User = require("../models/user");
+const { User } = require("../models/association");
 
 const registerUser = async (req, res) => {
   console.log("1");
@@ -25,6 +25,7 @@ const registerUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
+  console.log(User, "Usr");
   const users = await User.findAll();
   res.send(users);
 };

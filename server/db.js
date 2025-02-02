@@ -1,439 +1,103 @@
-let projectList = [
-      {
-        id: 1001,
-        projectName: "Website Redesign",
-        description: "A complete overhaul of the company website.",
-        startDate: "2024-10-09",
-        endDate: "2024-10-09",
-        projectManager: ["Alice"],
-        teamMembers: ["David", "Eva"],
-        budget: 15000,
-        milestones: [
-          { id: 2001, name: "Initial Design Approval", dueDate: "2024-10-09", status: "Pending" },
-          { id: 2002, name: "Development Phase Complete", dueDate: "2024-10-09", status: "Pending" },
-        ],
-        tasks: [
-          {
-            id: 3001,
-            name: "Create Wireframes",
-            description: "Develop wireframes for key pages.",
-            assignedTo: "David",
-            dueDate: "2024-10-09",
-            priority: "High",
-            status: "In Progress",
-          },
-          {
-            id: 3002,
-            name: "Write Content",
-            description: "Draft new content for the site.",
-            assignedTo: "Eva",
-            dueDate: "2024-10-09",
-            priority: "Medium",
-            status: "Pending",
-          },
-        ],
-        risks: [
-          {
-            id: 4001,
-            description: "Delay in approvals",
-            impact: "Project timeline may extend",
-            mitigationPlan: "Schedule regular check-ins with stakeholders",
-          },
-        ],
-        attachments: [],
-      },
-      {
-        id: 1002,
-        projectName: "Mobile App Launch",
-        description: "Launch of the new mobile application.",
-        startDate: "2024-10-09",
-        endDate: "2024-10-09",
-        projectManager: ["Bob"],
-        teamMembers: ["David", "Frank"],
-        budget: 25000,
-        milestones: [
-          { id: 2003, name: "Beta Testing", dueDate: "2024-10-09", status: "Pending" },
-          { id: 2004, name: "Launch Date", dueDate: "2024-10-09", status: "Pending" },
-        ],
-        tasks: [
-          {
-            id: 3003,
-            name: "Finalize App Features",
-            description: "Confirm final features for the app.",
-            assignedTo: "David",
-            dueDate: "2024-10-09",
-            priority: "High",
-            status: "Pending",
-          },
-          {
-            id: 3004,
-            name: "Marketing Strategy",
-            description: "Develop marketing plan for launch.",
-            assignedTo: "Frank",
-            dueDate: "2024-10-09",
-            priority: "Medium",
-            status: "In Progress",
-          },
-        ],
-        risks: [
-          {
-            id: 4002,
-            description: "Technical bugs during testing",
-            impact: "Launch may be delayed",
-            mitigationPlan: "Conduct thorough testing",
-          },
-        ],
-        attachments: [],
-      },
-      {
-        id: 1003,
-        projectName: "Customer Feedback System",
-        description: "Implementation of a customer feedback collection system.",
-        startDate: "2024-10-09",
-        endDate: "2024-10-09",
-        projectManager: ["Charlie"],
-        teamMembers: ["Eva", "Frank"],
-        budget: 10000,
-        milestones: [
-          { id: 2005, name: "System Design", dueDate: "2024-10-09", status: "Pending" },
-          { id: 2006, name: "System Launch", dueDate: "2024-10-09", status: "Pending" },
-        ],
-        tasks: [
-          {
-            id: 3005,
-            name: "Identify Feedback Channels",
-            description: "Determine the channels for feedback collection.",
-            assignedTo: "Eva",
-            dueDate: "2024-10-09",
-            priority: "High",
-            status: "Pending",
-          },
-          {
-            id: 3006,
-            name: "Develop Feedback Form",
-            description: "Create a form for collecting feedback.",
-            assignedTo: "Frank",
-            dueDate: "2024-10-09",
-            priority: "Medium",
-            status: "In Progress",
-          },
-        ],
-        risks: [
-          {
-            id: 4003,
-            description: "Low user engagement",
-            impact: "Inaccurate feedback",
-            mitigationPlan: "Promote system through emails and meetings",
-          },
-        ],
-        attachments: [],
-      },
-      {
-        id: 1004,
-        projectName: "Data Migration",
-        description: "Migration of data from legacy systems to a new platform.",
-        startDate: "2024-10-09",
-        endDate: "2024-10-09",
-        projectManager: ["Alice"],
-        teamMembers: ["David", "Eva"],
-        budget: 20000,
-        milestones: [
-          { id: 2007, name: "Data Mapping Completed", dueDate: "2024-10-09", status: "Pending" },
-          { id: 2008, name: "Migration Complete", dueDate: "2024-10-09", status: "Pending" },
-        ],
-        tasks: [
-          {
-            id: 3007,
-            name: "Analyze Current Data Structure",
-            description: "Review existing data for migration.",
-            assignedTo: "David",
-            dueDate: "2024-10-09",
-            priority: "High",
-            status: "In Progress",
-          },
-          {
-            id: 3008,
-            name: "Develop Migration Plan",
-            description: "Create a detailed plan for data migration.",
-            assignedTo: "Eva",
-            dueDate: "2024-10-09",
-            priority: "Medium",
-            status: "Pending",
-          },
-        ],
-        risks: [
-          {
-            id: 4004,
-            description: "Data loss during migration",
-            impact: "Loss of critical information",
-            mitigationPlan: "Backup all data before migration",
-          },
-        ],
-        attachments: [],
-      },
-      {
-        id: 1005,
-        projectName: "HR Management System",
-        description: "Development of a new HR management system.",
-        startDate: "2024-10-09",
-        endDate: "2024-10-09",
-        projectManager: ["Bob"],
-        teamMembers: ["Eva", "Frank"],
-        budget: 30000,
-        milestones: [
-          { id: 2009, name: "Requirement Gathering", dueDate: "2024-10-09", status: "Pending" },
-          { id: 2010, name: "System Deployment", dueDate: "2024-10-09", status: "Pending" },
-        ],
-        tasks: [
-          {
-            id: 3010,
-            name: "Conduct Stakeholder Interviews",
-            description: "Gather requirements from stakeholders.",
-            assignedTo: "Eva",
-            dueDate: "2024-10-09",
-            priority: "High",
-            status: "Pending",
-          },
-          {
-            id: 3011,
-            name: "Develop Prototype",
-            description: "Create a prototype of the HR system.",
-            assignedTo: "Frank",
-            dueDate: "2024-10-09",
-            priority: "Medium",
-            status: "In Progress",
-          },
-        ],
-        risks: [
-          {
-            id: 4005,
-            description: "Scope creep",
-            impact: "Delayed project timeline",
-            mitigationPlan: "Strictly manage change requests",
-          },
-        ],
-        attachments: [],
-      },
-    ];
+const sequelize = require("./utils/database");
+const {
+  User,
+  Project,
+  Milestone,
+  Task,
+  Risk,
+} = require("./models/association");
+const { faker } = require("@faker-js/faker");
 
-module.exports = {
-      projectList
+async function seedDatabase() {
+  try {
+    // Sync database (adjust options based on your needs)
+    await sequelize.sync({ force: true });
+    console.log("Database synced!");
+
+    // Create mock users
+    const users = [];
+    for (let i = 0; i < 10; i++) {
+      const user = await User.create({
+        id: faker.string.uuid(),
+        email: faker.internet.email(),
+        username: faker.internet.username(),
+        password: faker.internet.password(),
+      });
+      users.push(user);
+    }
+    console.log("Users created!");
+
+    // Create mock projects
+    const projects = [];
+    for (let i = 0; i < 5; i++) {
+      const project = await Project.create({
+        id: i + 1,
+        projectName: faker.company.name(),
+        description: faker.lorem.sentence(),
+        startDate: faker.date.past().toISOString().split("T")[0],
+        endDate: faker.date.future().toISOString().split("T")[0],
+        budget: faker.finance.amount(10000, 100000, 2),
+        projectManager: faker.internet.username(),
+      });
+      projects.push(project);
+    }
+    console.log("Projects created!");
+
+    // Add users to projects (Many-to-Many)
+    for (const project of projects) {
+      const randomUsers = faker.helpers.arrayElements(users, 3); // Pick 3 random users
+      await project.addTeamMembers(randomUsers);
+    }
+    console.log("Users added to projects!");
+
+    // Create milestones, tasks, and risks for each project
+    for (const project of projects) {
+      // Milestones
+      for (let i = 0; i < 3; i++) {
+        await project.createMilestone({
+          name: faker.lorem.words(3),
+          dueDate: faker.date.future().toISOString().split("T")[0],
+          status: faker.helpers.arrayElement([
+            "Pending",
+            "Completed",
+            "In Progress",
+          ]),
+        });
+      }
+
+      // Tasks
+      for (let i = 0; i < 5; i++) {
+        await project.createTask({
+          name: faker.lorem.words(2),
+          status: faker.helpers.arrayElement([
+            "Pending",
+            "Completed",
+            "In Progress",
+          ]),
+          dueDate: faker.date.future().toISOString().split("T")[0],
+          priority: faker.helpers.arrayElement(["Low", "Medium", "High"]),
+          description: faker.lorem.sentence(),
+          assignedTo: faker.internet.username(),
+        });
+      }
+
+      // Risks
+      for (let i = 0; i < 2; i++) {
+        await project.createRisk({
+          description: faker.lorem.sentence(),
+          impact: faker.lorem.sentence(),
+          mitigationPlan: faker.lorem.sentence(),
+        });
+      }
+    }
+    console.log("Milestones, tasks, and risks created!");
+
+    console.log("Seeding complete!");
+  } catch (err) {
+    console.error("Error seeding database:", err);
+  } finally {
+    await sequelize.close();
+  }
 }
 
-//     [
-//       {
-//         id: 1001,
-//         projectName: "Website Redesign",
-//         description: "A complete overhaul of the company website.",
-//         startDate: "2024-10-09",
-//         endDate: "2024-10-09",
-//         projectManager: ["Alice"],
-//         teamMembers: ["David", "Eva"],
-//         budget: 15000,
-//         milestones: [
-//           { id: 2001, name: "Initial Design Approval", dueDate: "2024-10-09", status: "Pending" },
-//           { id: 2002, name: "Development Phase Complete", dueDate: "2024-10-09", status: "Pending" },
-//         ],
-//         tasks: [
-//           {
-//             id: 3001,
-//             name: "Create Wireframes",
-//             description: "Develop wireframes for key pages.",
-//             assignedTo: "David",
-//             dueDate: "2024-10-09",
-//             priority: "High",
-//             status: "In Progress",
-//           },
-//           {
-//             id: 3002,
-//             name: "Write Content",
-//             description: "Draft new content for the site.",
-//             assignedTo: "Eva",
-//             dueDate: "2024-10-09",
-//             priority: "Medium",
-//             status: "Pending",
-//           },
-//         ],
-//         risks: [
-//           {
-//             id: 4001,
-//             description: "Delay in approvals",
-//             impact: "Project timeline may extend",
-//             mitigationPlan: "Schedule regular check-ins with stakeholders",
-//           },
-//         ],
-//         attachments: [],
-//       },
-//       {
-//         id: 1002,
-//         projectName: "Mobile App Launch",
-//         description: "Launch of the new mobile application.",
-//         startDate: "2024-10-09",
-//         endDate: "2024-10-09",
-//         projectManager: ["Bob"],
-//         teamMembers: ["David", "Frank"],
-//         budget: 25000,
-//         milestones: [
-//           { id: 2003, name: "Beta Testing", dueDate: "2024-10-09", status: "Pending" },
-//           { id: 2004, name: "Launch Date", dueDate: "2024-10-09", status: "Pending" },
-//         ],
-//         tasks: [
-//           {
-//             id: 3003,
-//             name: "Finalize App Features",
-//             description: "Confirm final features for the app.",
-//             assignedTo: "David",
-//             dueDate: "2024-10-09",
-//             priority: "High",
-//             status: "Pending",
-//           },
-//           {
-//             id: 3004,
-//             name: "Marketing Strategy",
-//             description: "Develop marketing plan for launch.",
-//             assignedTo: "Frank",
-//             dueDate: "2024-10-09",
-//             priority: "Medium",
-//             status: "In Progress",
-//           },
-//         ],
-//         risks: [
-//           {
-//             id: 4002,
-//             description: "Technical bugs during testing",
-//             impact: "Launch may be delayed",
-//             mitigationPlan: "Conduct thorough testing",
-//           },
-//         ],
-//         attachments: [],
-//       },
-//       {
-//         id: 1003,
-//         projectName: "Customer Feedback System",
-//         description: "Implementation of a customer feedback collection system.",
-//         startDate: "2024-10-09",
-//         endDate: "2024-10-09",
-//         projectManager: ["Charlie"],
-//         teamMembers: ["Eva", "Frank"],
-//         budget: 10000,
-//         milestones: [
-//           { id: 2005, name: "System Design", dueDate: "2024-10-09", status: "Pending" },
-//           { id: 2006, name: "System Launch", dueDate: "2024-10-09", status: "Pending" },
-//         ],
-//         tasks: [
-//           {
-//             id: 3005,
-//             name: "Identify Feedback Channels",
-//             description: "Determine the channels for feedback collection.",
-//             assignedTo: "Eva",
-//             dueDate: "2024-10-09",
-//             priority: "High",
-//             status: "Pending",
-//           },
-//           {
-//             id: 3006,
-//             name: "Develop Feedback Form",
-//             description: "Create a form for collecting feedback.",
-//             assignedTo: "Frank",
-//             dueDate: "2024-10-09",
-//             priority: "Medium",
-//             status: "In Progress",
-//           },
-//         ],
-//         risks: [
-//           {
-//             id: 4003,
-//             description: "Low user engagement",
-//             impact: "Inaccurate feedback",
-//             mitigationPlan: "Promote system through emails and meetings",
-//           },
-//         ],
-//         attachments: [],
-//       },
-//       {
-//         id: 1004,
-//         projectName: "Data Migration",
-//         description: "Migration of data from legacy systems to a new platform.",
-//         startDate: "2024-10-09",
-//         endDate: "2024-10-09",
-//         projectManager: ["Alice"],
-//         teamMembers: ["David", "Eva"],
-//         budget: 20000,
-//         milestones: [
-//           { id: 2007, name: "Data Mapping Completed", dueDate: "2024-10-09", status: "Pending" },
-//           { id: 2008, name: "Migration Complete", dueDate: "2024-10-09", status: "Pending" },
-//         ],
-//         tasks: [
-//           {
-//             id: 3007,
-//             name: "Analyze Current Data Structure",
-//             description: "Review existing data for migration.",
-//             assignedTo: "David",
-//             dueDate: "2024-10-09",
-//             priority: "High",
-//             status: "In Progress",
-//           },
-//           {
-//             id: 3008,
-//             name: "Develop Migration Plan",
-//             description: "Create a detailed plan for data migration.",
-//             assignedTo: "Eva",
-//             dueDate: "2024-10-09",
-//             priority: "Medium",
-//             status: "Pending",
-//           },
-//         ],
-//         risks: [
-//           {
-//             id: 4004,
-//             description: "Data loss during migration",
-//             impact: "Loss of critical information",
-//             mitigationPlan: "Backup all data before migration",
-//           },
-//         ],
-//         attachments: [],
-//       },
-//       {
-//         id: 1005,
-//         projectName: "HR Management System",
-//         description: "Development of a new HR management system.",
-//         startDate: "2024-10-09",
-//         endDate: "2024-10-09",
-//         projectManager: ["Bob"],
-//         teamMembers: ["Eva", "Frank"],
-//         budget: 30000,
-//         milestones: [
-//           { id: 2009, name: "Requirement Gathering", dueDate: "2024-10-09", status: "Pending" },
-//           { id: 2010, name: "System Deployment", dueDate: "2024-10-09", status: "Pending" },
-//         ],
-//         tasks: [
-//           {
-//             id: 3010,
-//             name: "Conduct Stakeholder Interviews",
-//             description: "Gather requirements from stakeholders.",
-//             assignedTo: "Eva",
-//             dueDate: "2024-10-09",
-//             priority: "High",
-//             status: "Pending",
-//           },
-//           {
-//             id: 3011,
-//             name: "Develop Prototype",
-//             description: "Create a prototype of the HR system.",
-//             assignedTo: "Frank",
-//             dueDate: "2024-10-09",
-//             priority: "Medium",
-//             status: "In Progress",
-//           },
-//         ],
-//         risks: [
-//           {
-//             id: 4005,
-//             description: "Scope creep",
-//             impact: "Delayed project timeline",
-//             mitigationPlan: "Strictly manage change requests",
-//           },
-//         ],
-//         attachments: [],
-//       },
-//     ]
+seedDatabase();

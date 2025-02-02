@@ -3,10 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
   Box,
   IconButton,
   CircularProgress,
@@ -29,18 +25,18 @@ function ProjectCard({ project }) {
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">{project.projectName}</Typography>
-        <Typography variant="body1">{project.description}</Typography>
-        <Typography variant="h6">
-          Project Manager: {project.projectManager.join(", ")}
+        <Typography variant="h4">{project?.projectName}</Typography>
+        <Typography variant="body1">{project?.description}</Typography>
+        {/* <Typography variant="h6">
+          Project Manager: {project?.projectManager.join(", ")}
         </Typography>
         <Typography variant="h6">
-          Team Members: {project.teamMembers.join(", ")}
-        </Typography>
-        <Typography variant="h6">Budget: ${project.budget}</Typography>
+          Team Members: {project?.teamMembers.join(", ")}
+        </Typography> */}
+        <Typography variant="h6">Budget: ${project?.budget}</Typography>
         <Typography variant="h6">
-          Duration: {new Date(project.startDate).toLocaleDateString()} to{" "}
-          {new Date(project.endDate).toLocaleDateString()}
+          Duration: {new Date(project?.startDate).toLocaleDateString()} to{" "}
+          {new Date(project?.endDate).toLocaleDateString()}
         </Typography>
         <Footer project={project}></Footer>
       </CardContent>

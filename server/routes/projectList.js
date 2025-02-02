@@ -14,7 +14,7 @@ const router = new Router();
 router.use(authenticate);
 
 router.get("/projectList", getAllProjectList);
-router.get("/project", getProject);
+router.post("/project", getProject);
 router.post("/updateProject", updateProject);
 router.post("/createProject", createProject);
 router.delete("/deleteProject", deleteProject);

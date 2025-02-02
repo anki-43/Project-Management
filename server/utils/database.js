@@ -6,4 +6,6 @@ const sequelize = new Sequelize("projectmgt", "root", "Ankit@7092", {
   logging: () => true,
 });
 
+// sequelize.sync({ force: true });
+
 module.exports = sequelize;

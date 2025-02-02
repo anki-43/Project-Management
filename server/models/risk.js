@@ -1,10 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require("../util/database");
+const sequelize = require("../utils/database");
+const Project = require("./project");
 
-const Risk = sequelize.define("Risk", {
+const Risk = sequelize.define("risk", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
+    autoIncrement: true, // Auto-increment for integers
     allowNull: false,
   },
   description: {
@@ -16,10 +18,9 @@ const Risk = sequelize.define("Risk", {
   mitigationPlan: {
     type: Sequelize.STRING,
   },
+  projectId: { type: Sequelize.INTEGER, allowNull: false },
 });
 
-Risk.associate = (models) => {
-  Risk.belongsTo(models.Project, { foreignKey: "projectId" });
-};
+// Risk.belongsTo(Project, { foreignKey: "projectId" });
 
 module.exports = Risk;

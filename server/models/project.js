@@ -1,6 +1,9 @@
 const Sequelize = require("sequelize");
-
+const Milestone = require("./milestone");
+const Risk = require("./risk");
+const Task = require("./task");
 const sequelize = require("../utils/database");
+const User = require("./user");
 
 const Project = sequelize.define("project", {
   id: {
@@ -26,22 +29,10 @@ const Project = sequelize.define("project", {
     type: Sequelize.DOUBLE,
     allowNull: false,
   },
+  projectManager: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
 });
-
-Project.associate = (models) => {
-  Project.hasMany(models.Milestone, { foreignKey: "projectId" });
-  Project.hasMany(models.Task, { foreignKey: "projectId" });
-  Project.hasMany(models.Risk, { foreignKey: "projectId" });
-  Project.belongsToMany(models.User, {
-    through: "ProjectTeamMembers",
-    as: "teamMembers",
-    foreignKey: "projectId",
-  });
-  Project.belongsToMany(models.User, {
-    through: "ProjectManagers",
-    as: "projectManagers",
-    foreignKey: "projectId",
-  });
-};
 
 module.exports = Project;
