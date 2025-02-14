@@ -33,6 +33,10 @@ const Project = sequelize.define("project", {
     type: Sequelize.STRING,
     allowNull: true,
   },
+  teamMembers: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
 });
 
 module.exports = Project;

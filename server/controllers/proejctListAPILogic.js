@@ -4,7 +4,7 @@ const {
   Milestone,
   Task,
   User,
-  ProjectTeamMembers,
+  ProjectTeamMember,
 } = require("../models/association");
 
 const getAllProjectList = async (req, res) => {
@@ -55,23 +55,95 @@ const getProject = async (req, res) => {
   res.json(project);
 };
 
-const updateProject = (req, res) => {
-  let updatedProject = req.body.project;
+const updateProject = async (req, res) => {
   let projectId = req.body.id;
-};
-
-const createProject = async (req, res) => {
-  let newProject = req.body.project;
   try {
-    if (req?.body?.project) {
-      const project = await Project.create();
-      res.send({
+    if (req?.body) {
+      const pro = await Project.update(
+        {
+          projectName: req.body.projectName,
+          description: req.body.description,
+          startDate: req.body.startDate,
+          endDate: req.body.endDate,
+          projectManager: req.body.projectManager,
+          budget: req.body.budget,
+          teamMembers: req.body.teamMembers.join(""),
+          milestones: req.body.milestones,
+          tasks: req.body.tasks,
+          risks: req.body.risks,
+        },
+        {
+          include: [
+            {
+              model: Milestone,
+              as: "milestones",
+            },
+            {
+              model: Risk,
+              as: "risks",
+            },
+            {
+              model: Task,
+              as: "tasks",
+            },
+          ],
+        }
+      );
+      res.json({
         status: true,
         message: "Project created succesfully",
       });
     }
   } catch (err) {
-    res.send({
+    console.log(err);
+    res.json({
+      status: false,
+      erroeMessage: err,
+    });
+  }
+};
+
+const createProject = async (req, res) => {
+  try {
+    if (req?.body) {
+      const pro = await Project.create(
+        {
+          projectName: req.body.projectName,
+          description: req.body.description,
+          startDate: req.body.startDate,
+          endDate: req.body.endDate,
+          projectManager: req.body.projectManager,
+          budget: req.body.budget,
+          teamMembers: req.body.teamMembers.join(""),
+          milestones: req.body.milestones,
+          tasks: req.body.tasks,
+          risks: req.body.risks,
+        },
+        {
+          include: [
+            {
+              model: Milestone,
+              as: "milestones",
+            },
+            {
+              model: Risk,
+              as: "risks",
+            },
+            {
+              model: Task,
+              as: "tasks",
+            },
+          ],
+        }
+      );
+      res.json({
+        status: true,
+        message: "Project created succesfully",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.json({
       status: false,
       erroeMessage: err,
     });
@@ -82,8 +154,8 @@ const deleteProject = (req, res) => {
   let projectId = req.body;
 };
 
-const getAllProjectTeamMembers = async (req, res) => {
-  const Members = await ProjectTeamMembers.findAll({
+const getAllProjectTeamMember = async (req, res) => {
+  const Members = await ProjectTeamMember.findAll({
     include: [
       {
         model: User,
@@ -99,5 +171,5 @@ module.exports = {
   updateProject,
   createProject,
   deleteProject,
-  getAllProjectTeamMembers,
+  getAllProjectTeamMember,
 };

@@ -137,9 +137,10 @@ const initialValues = {
 function AppForm(props) {
   const updateMode = useSelector((state) => state.projectStore.updateMode);
 
-  const onSubmitForm = () => {
+  const onSubmitForm = async (formObj) => {
     if (updateMode) {
     } else {
+      console.log(formObj);
     }
   };
   return (

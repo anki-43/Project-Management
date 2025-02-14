@@ -4,7 +4,7 @@ const sequelize = require("../utils/database");
 const { User } = require("./user");
 const { Project } = require("./project");
 
-const ProjectTeamMembers = sequelize.define("ProjectTeamMembers", {
+const ProjectTeamMember = sequelize.define("ProjectTeamMember", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -28,4 +28,4 @@ const ProjectTeamMembers = sequelize.define("ProjectTeamMembers", {
   },
 });
 
-module.exports = ProjectTeamMembers;
+module.exports = ProjectTeamMember;
