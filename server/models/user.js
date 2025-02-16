@@ -1,7 +1,6 @@
 const Sequelize = require("sequelize");
 const { v4: uuidv4 } = require("uuid");
 const sequelize = require("../utils/database");
-const ProjectTeamMember = require("./projectTeamMember");
 const Project = require("./project");
 
 const User = sequelize.define("user", {

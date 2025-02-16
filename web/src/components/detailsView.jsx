@@ -41,7 +41,7 @@ function DetailView() {
       </Box>
       <Box sx={{ display: "flex", gap: "20px", flex: 9, height: "90vh" }}>
         <LeftSideBar></LeftSideBar>
-        <Box className="section">
+        <Box className="section" sx={{ mt: "20px" }}>
           <Header></Header>
           <Card>
             <CardHeader title={project.projectName}></CardHeader>

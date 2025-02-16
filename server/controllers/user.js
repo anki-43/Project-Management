@@ -26,7 +26,12 @@ const registerUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   console.log(User, "Usr");
-  const users = await User.findAll();
+  let users = await User.findAll();
+  users = users.map((el) => {
+    return {
+      username: el.username,
+    };
+  });
   res.send(users);
 };
 

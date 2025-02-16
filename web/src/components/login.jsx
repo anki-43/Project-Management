@@ -1,22 +1,4 @@
-import {
-  Container,
-  TextField,
-  Button,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  IconButton,
-  Chip,
-  Box,
-  Paper,
-  Typography,
-  Toolbar,
-  Alert,
-} from "@mui/material";
+import { TextField, Button, Box, Alert } from "@mui/material";
 import { useFormik, Field, Form, FieldArray, Formik } from "formik";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
@@ -60,12 +42,13 @@ function Login() {
   };
 
   return (
-    <div className="App">
+    <div className="App login">
       <Box
         sx={{
           background: "white",
           margin: "auto",
-          borderRadius: 3,
+          borderRadius: 1,
+          width: "33%",
         }}
       >
         <Formik
@@ -76,7 +59,7 @@ function Login() {
         >
           {({ values, handleChange }) => (
             <Form>
-              <Grid container spacing={2} sx={{ padding: 8 }}>
+              <Grid className="form" container spacing={2} sx={{ padding: 8 }}>
                 <Grid
                   item
                   xs={12}
@@ -118,15 +101,20 @@ function Login() {
                     placeholder="Enter password"
                   ></TextField>
                 </Grid>
-                <Grid item xs={12} sx={{ margin: "auto" }}>
-                  <Button type="submit" variant="contained">
+                <Grid item xs={12} size={12} fullWidth>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    style={{ width: "100%", marginTop: 8 }}
+                  >
                     Login
                   </Button>
                 </Grid>
-                <Grid item xs={12} sx={{ margin: "auto" }}>
-                  <Link to={"/register"}>
-                    <Button variant="contained">Register</Button>
-                  </Link>
+                <Grid
+                  sx={{ position: "absolute", right: "20px", bottom: "20px" }}
+                >
+                  <span>Need an Account </span>
+                  <Link to={"/register"}>Register</Link>
                 </Grid>
               </Grid>
             </Form>

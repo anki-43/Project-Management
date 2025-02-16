@@ -4,7 +4,6 @@ const {
   Milestone,
   Task,
   User,
-  ProjectTeamMember,
 } = require("../models/association");
 
 const getAllProjectList = async (req, res) => {
@@ -154,22 +153,10 @@ const deleteProject = (req, res) => {
   let projectId = req.body;
 };
 
-const getAllProjectTeamMember = async (req, res) => {
-  const Members = await ProjectTeamMember.findAll({
-    include: [
-      {
-        model: User,
-      },
-    ],
-  });
-  res.send(Members);
-};
-
 module.exports = {
   getAllProjectList,
   getProject,
   updateProject,
   createProject,
   deleteProject,
-  getAllProjectTeamMember,
 };

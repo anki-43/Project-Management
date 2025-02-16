@@ -63,7 +63,7 @@ function CreateProject(props) {
       </Box>
       <Box sx={{ display: "flex", gap: "20px", flex: 9, height: "90vh" }}>
         <LeftSideBar></LeftSideBar>
-        <Box className="section">
+        <Box className="section" sx={{ mt: "20px" }}>
           <Formheader></Formheader>
           <AppForm currentProject={{ currentProject }}></AppForm>
         </Box>
