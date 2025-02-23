@@ -4,6 +4,7 @@ const {
   Milestone,
   Task,
   User,
+  sequelize,
 } = require("../models/association");
 
 const getAllProjectList = async (req, res) => {
@@ -55,39 +56,151 @@ const getProject = async (req, res) => {
 };
 
 const updateProject = async (req, res) => {
-  let projectId = req.body.id;
+  const t = await sequelize.transaction();
+
   try {
+    const project = req.body;
     if (req?.body) {
-      const pro = await Project.update(
+      const [results, _] = await sequelize.query(
+        "UPDATE projects SET projectName = ?, description = ?, startDate =  ?, endDate = ?, projectManager = ?, budget = ?, teamMembers = ? WHERE id = ?",
         {
-          projectName: req.body.projectName,
-          description: req.body.description,
-          startDate: req.body.startDate,
-          endDate: req.body.endDate,
-          projectManager: req.body.projectManager,
-          budget: req.body.budget,
-          teamMembers: req.body.teamMembers.join(""),
-          milestones: req.body.milestones,
-          tasks: req.body.tasks,
-          risks: req.body.risks,
-        },
-        {
-          include: [
-            {
-              model: Milestone,
-              as: "milestones",
-            },
-            {
-              model: Risk,
-              as: "risks",
-            },
-            {
-              model: Task,
-              as: "tasks",
-            },
+          replacements: [
+            project.projectName,
+            project.description,
+            project.startDate,
+            project.endDate,
+            project.projectManager,
+            project.budget,
+            project.teamMembers.join(""),
+            project.id,
           ],
         }
       );
+
+      project.tasks.forEach(async (task) => {
+        let taskExists = Task.findByPk(task.id);
+        if (taskExists) {
+          const [taskResult, _] = await sequelize.query(
+            "UPDATE tasks SET name = ?, dueDate = ?, status =  ?, description = ?, assignedTo = ?, priority = ? WHERE id = ?",
+            {
+              replacements: [
+                task.name,
+                task.dueDate,
+                task.status,
+                task.description,
+                task.assignedTo,
+                task.priority,
+                task.id,
+              ],
+            }
+          );
+          if (taskResult.affectedRows === 0) {
+            console.log("project not found. Task");
+            // await t.rollback();
+            return;
+          }
+        } else {
+          const [taskResult, _] = await sequelize.query(
+            "INSERT INTO tasks (name, dueDate, status, description , assignedTo , priority,  projectId) VALUES(?,?,?,?,?,?,?)",
+            {
+              replacements: [
+                task.name,
+                task.dueDate,
+                task.status,
+                task.description,
+                task.assignedTo,
+                task.priority,
+                project.id,
+              ],
+            }
+          );
+          if (taskResult.affectedRows === 0) {
+            console.log("project not found. Task");
+            // await t.rollback();
+            return;
+          }
+        }
+      });
+
+      project.milestones.forEach(async (milestone) => {
+        let milestoneExists = Milestone.findByPk(milestone.id);
+        if (milestoneExists) {
+          const [milestoneResult, _] = await sequelize.query(
+            "UPDATE milestones SET name = ?, dueDate = ?, status =  ? WHERE id = ?",
+            {
+              replacements: [
+                milestone.name,
+                milestone.dueDate,
+                milestone.status,
+                milestone.id,
+              ],
+            }
+          );
+          if (milestoneResult.affectedRows === 0) {
+            console.log("project not found. Milestone");
+            // await t.rollback();
+            return;
+          }
+        } else {
+          const [milestoneResult, _] = await sequelize.query(
+            "INSERT INTO milestones (name, dueDate, status, projectId) VALUES(?,?,?,?)",
+            {
+              replacements: [
+                milestone.name,
+                milestone.dueDate,
+                milestone.status,
+                project.id,
+              ],
+            }
+          );
+          if (milestoneResult.affectedRows === 0) {
+            console.log("project not found. Milestone");
+            // await t.rollback();
+            return;
+          }
+        }
+      });
+
+      project.risks.forEach(async (risk) => {
+        let riskExists = Risk.findByPk(risk.id);
+        if (riskExists) {
+          const [riskResult, _] = await sequelize.query(
+            "UPDATE risks SET description = ?, mitigationPlan = ?, impact =  ? WHERE id = ?",
+            {
+              replacements: [
+                risk.description,
+                risk.mitigationPlan,
+                risk.impact,
+                risk.id,
+              ],
+            }
+          );
+          if (riskResult.affectedRows === 0) {
+            console.log("project not found. Risk");
+            // await t.rollback();
+            return;
+          }
+        } else {
+          const [riskResult, _] = await sequelize.query(
+            "INSERT INTO risks (description, mitigationPlan, impact, projectId) VALUES(?,?,?,?)",
+            {
+              replacements: [
+                risk.description,
+                risk.mitigationPlan,
+                risk.impact,
+                project.id,
+              ],
+            }
+          );
+          if (riskResult.affectedRows === 0) {
+            console.log("project not found. Risk");
+            // await t.rollback();
+            return;
+          }
+        }
+      });
+
+      await t.commit();
       res.json({
         status: true,
         message: "Project created succesfully",
@@ -149,8 +262,23 @@ const createProject = async (req, res) => {
   }
 };
 
-const deleteProject = (req, res) => {
-  let projectId = req.body;
+const deleteProject = async (req, res) => {
+  try {
+    await Project.destroy({
+      where: {
+        id: req.body.id,
+      },
+    });
+
+    res.json({
+      status: true,
+    });
+  } catch (err) {
+    res.json({
+      status: false,
+      error: err,
+    });
+  }
 };
 
 module.exports = {

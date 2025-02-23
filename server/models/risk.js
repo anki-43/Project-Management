@@ -21,6 +21,4 @@ const Risk = sequelize.define("risk", {
   projectId: { type: Sequelize.INTEGER, allowNull: false },
 });
 
-// Risk.belongsTo(Project, { foreignKey: "projectId" });
-
 module.exports = Risk;

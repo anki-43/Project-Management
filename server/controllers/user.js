@@ -29,10 +29,13 @@ const getAllUsers = async (req, res) => {
   let users = await User.findAll();
   users = users.map((el) => {
     return {
-      username: el.username,
+      name: el.username,
     };
   });
-  res.send(users);
+  res.json({
+    status: true,
+    users: users,
+  });
 };
 
 const login = async (req, res) => {
