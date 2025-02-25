@@ -6,6 +6,7 @@ import History from "./components/sectionComponents/history.jsx";
 import CreateProject from "./components/createProject.jsx";
 import Login from "./components/login.jsx";
 import DetailView from "./components/detailsView.jsx";
+import EditProject from "./components/editProject.jsx";
 import Registeruser from "./components/registerUser.jsx";
 import CommonHeader from "./components/sectionComponents/commonHeader.jsx";
 import { Box } from "@mui/material";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/history" element={<History />}></Route>
         <Route path="/create" element={<CreateProject />}></Route>
         <Route path="/detailView/:id" element={<DetailView />}></Route>
+        <Route path="/editProject/:id" element={<EditProject />}></Route>
       </Routes>
     </>
   );

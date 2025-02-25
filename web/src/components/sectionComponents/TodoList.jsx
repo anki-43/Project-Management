@@ -16,6 +16,7 @@ import {
   updateCurrentProjectValue,
   deleteProject,
   saveProjectList,
+  changeUpdateMode,
 } from "../../features/projectDetails/projectStore.js";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -101,7 +102,7 @@ const Footer = (props) => {
       bgcolor="#f5f5f5"
       borderTop="1px solid #ddd"
     >
-      <Link to="/create" state={idData}>
+      <Link to={"/editProject/" + props.project.id} key={"editView"}>
         <IconButton aria-label="edit">
           <EditIcon />
         </IconButton>

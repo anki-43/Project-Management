@@ -33,10 +33,58 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CommonHeader from "./sectionComponents/commonHeader";
 import LeftSideBar from "./LeftSideBar";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
-function CreateProject() {
+function EditProject() {
+  const [currentProject, setProject] = useState({});
+  const { id } = useParams();
+
+  const fetchProject = async () => {
+    const response = await axios.post("http://localhost:8081/proj/project", {
+      id: id,
+    });
+
+    setProject({
+      ...response.data,
+      projectManager: [response.data.projectManager],
+      teamMembers: response.data.teamMembers.split(","),
+      risks: response.data.risks?.length
+        ? response.data.risks
+        : [{ id: uuidv4(), description: "", impact: "", mitigationPlan: "" }],
+      milestones: response.data.milestones?.length
+        ? response.data.milestones.map((el) => {
+            return {
+              ...el,
+              dueDate: dayjs(el.dueDate).format("YYYY-MM-DD"),
+            };
+          })
+        : [{ id: uuidv4(), name: "", dueDate: null, status: "" }],
+      tasks: response.data.tasks?.length
+        ? response.data.tasks.map((el) => {
+            return {
+              ...el,
+              dueDate: dayjs(el.dueDate).format("YYYY-MM-DD"),
+            };
+          })
+        : [
+            {
+              id: uuidv4(),
+              name: "",
+              description: "",
+              assignedTo: "",
+              dueDate: null,
+              priority: "",
+              status: "",
+            },
+          ],
+    });
+  };
+
+  useEffect(() => {
+    fetchProject();
+  }, []);
+
   return (
     <div className="App">
       <Box sx={{ padding: "10px 0 0 40px", flex: 1 }}>
@@ -44,10 +92,19 @@ function CreateProject() {
       </Box>
       <Box sx={{ display: "flex", gap: "20px", flex: 9, height: "90vh" }}>
         <LeftSideBar></LeftSideBar>
-        <Box className="section" sx={{ mt: "20px" }}>
-          <Formheader></Formheader>
-          <AppForm></AppForm>
-        </Box>
+        {Object.keys(currentProject).length ? (
+          <Box className="section" sx={{ mt: "20px" }}>
+            <Formheader></Formheader>
+            <AppForm
+              currentProject={currentProject}
+              setProject={setProject}
+            ></AppForm>
+          </Box>
+        ) : (
+          <Box className="section" sx={{ mt: "20px" }}>
+            Error
+          </Box>
+        )}
       </Box>
     </div>
   );
@@ -70,7 +127,7 @@ function Formheader() {
         </IconButton>
       </Link>
       <Typography variant="h5" style={{ flexGrow: 1 }}>
-        Create a Project
+        Edit a Project
       </Typography>
     </Toolbar>
   );
@@ -91,42 +148,21 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const initialValues = {
-  id: uuidv4(),
-  projectName: "",
-  description: "",
-  startDate: null,
-  endDate: null,
-  projectManager: [""],
-  teamMembers: [""],
-  budget: "",
-  milestones: [{ id: uuidv4(), name: "", dueDate: null, status: "" }],
-  tasks: [
-    {
-      id: uuidv4(),
-      name: "",
-      description: "",
-      assignedTo: "",
-      dueDate: null,
-      priority: "",
-      status: "",
-    },
-  ],
-  risks: [{ id: uuidv4(), description: "", impact: "", mitigationPlan: "" }],
-};
-
-function AppForm() {
+function AppForm(props) {
   const navigate = useNavigate();
   const onSubmitForm = async (formObj) => {
     const response = await axios.post(
-      "http://localhost:8081/proj/createProject",
+      "http://localhost:8081/proj/updateProject",
       { ...formObj }
     );
+    props.setProject(response.data);
 
-    if (response.success) {
+    if (response.status) {
       navigate("/home");
     }
   };
+
+  console.log(props.currentProject);
   return (
     <Container
       component="main"
@@ -139,22 +175,22 @@ function AppForm() {
     >
       <Paper sx={{ padding: 3 }}>
         <Formik
-          initialValues={initialValues}
+          initialValues={props.currentProject}
           onSubmit={(values) => {
             let formObj = {
               ...values,
-              startDate: values.startDate.format("YYYY-MM-DD"),
-              endDate: values.endDate.format("YYYY-MM-DD"),
+              startDate: values.startDate,
+              endDate: values.endDate,
               milestones: values.milestones.map((el) => {
                 return {
                   ...el,
-                  dueDate: el.dueDate.format("YYYY-MM-DD"),
+                  dueDate: el.dueDate,
                 };
               }),
               tasks: values.tasks.map((el) => {
                 return {
                   ...el,
-                  dueDate: el.dueDate.format("YYYY-MM-DD"),
+                  dueDate: el.dueDate,
                 };
               }),
             };
@@ -179,7 +215,7 @@ function AppForm() {
                         <DatePicker
                           sx={{ width: "100%" }}
                           label="Start Date"
-                          value={field.value}
+                          value={dayjs(field.value)}
                           onChange={(date) =>
                             form.setFieldValue("startDate", date)
                           }
@@ -198,7 +234,7 @@ function AppForm() {
                         <DatePicker
                           sx={{ width: "100%" }}
                           label="End Date"
-                          value={field.value}
+                          value={dayjs(field.value)}
                           onChange={(date) =>
                             form.setFieldValue("endDate", date)
                           }
@@ -233,7 +269,7 @@ function AppForm() {
                       <Field
                         as={Select}
                         name="teamMembers"
-                        multiple
+                        // multiple
                         label="Team Members"
                       >
                         {teamMembers.map((member) => (
@@ -283,7 +319,7 @@ function AppForm() {
                         >
                           Add Milestone
                         </Button>
-                        {values.milestones.map((milestone, index) => (
+                        {values?.milestones?.map((milestone, index) => (
                           <Grid
                             container
                             spacing={2}
@@ -307,7 +343,7 @@ function AppForm() {
                                     <DatePicker
                                       sx={{ width: "100%" }}
                                       label="Due Date"
-                                      value={field.value}
+                                      value={dayjs(field.value)}
                                       onChange={(date) =>
                                         form.setFieldValue(
                                           `milestones[${index}].dueDate`,
@@ -367,7 +403,7 @@ function AppForm() {
                         >
                           Add Task
                         </Button>
-                        {values.tasks.map((task, index) => (
+                        {values?.tasks?.map((task, index) => (
                           <Grid
                             container
                             spacing={2}
@@ -415,7 +451,7 @@ function AppForm() {
                                     <DatePicker
                                       sx={{ width: "100%" }}
                                       label="Due Date"
-                                      value={field.value}
+                                      value={dayjs(field.value)}
                                       onChange={(date) =>
                                         form.setFieldValue(
                                           `tasks[${index}].dueDate`,
@@ -481,7 +517,7 @@ function AppForm() {
                         >
                           Add Risk
                         </Button>
-                        {values.risks.map((risk, index) => (
+                        {values?.risks?.map((risk, index) => (
                           <Box key={risk.id} sx={{ marginBottom: 2 }}>
                             <Field
                               as={TextField}
@@ -532,4 +568,4 @@ function AppForm() {
   );
 }
 
-export default CreateProject;
+export default EditProject;
