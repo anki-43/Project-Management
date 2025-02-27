@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // Set withCredentials to true for all requests
-
+// sends cookies alog with every request
 axios.defaults.withCredentials = true;
 
 function Login() {
@@ -18,7 +18,6 @@ function Login() {
   };
 
   let [errorInSubmitForm, setErrorInSubmitForm] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   async function loginUser(payload) {
@@ -42,13 +41,12 @@ function Login() {
   };
 
   return (
-    <div className="App login">
+    <div className="App">
       <Box
         sx={{
           background: "white",
           margin: "auto",
-          borderRadius: 1,
-          width: "33%",
+          borderRadius: 3,
         }}
       >
         <Formik
@@ -59,7 +57,12 @@ function Login() {
         >
           {({ values, handleChange }) => (
             <Form>
-              <Grid className="form" container spacing={2} sx={{ padding: 8 }}>
+              <Grid
+                className="LoginForm"
+                container
+                spacing={2}
+                sx={{ padding: 8 }}
+              >
                 <Grid
                   item
                   xs={12}

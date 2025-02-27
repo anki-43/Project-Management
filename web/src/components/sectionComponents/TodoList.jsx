@@ -79,19 +79,17 @@ const TodoList = (props) => {
 export default TodoList;
 
 const Footer = (props) => {
-  const { handleOpenProject } = useMyContext();
   const dispatch = useDispatch();
+  const onDeleteClick = async (id) => {
+    const response = await axios.post(
+      "http://localhost:8081/proj/deleteProject",
+      {
+        id: id,
+      }
+    );
 
-  const openProjectfromFooter = () => {
-    dispatch(updateCurrentProjectValue(props.project));
-    handleOpenProject(true, true);
-  };
-
-  const onDeleteClick = (id) => {
     dispatch(deleteProject(id));
   };
-
-  const idData = { id: props.project.id };
 
   return (
     <Box

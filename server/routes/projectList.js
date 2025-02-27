@@ -17,6 +17,6 @@ router.get("/projectList", getAllProjectList);
 router.post("/project", getProject);
 router.post("/updateProject", updateProject);
 router.post("/createProject", createProject);
-router.delete("/deleteProject", deleteProject);
+router.post("/deleteProject", deleteProject);
 
 module.exports = router;

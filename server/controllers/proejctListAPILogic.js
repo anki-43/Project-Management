@@ -264,6 +264,7 @@ const createProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
   try {
+    console.log(req.body);
     await Project.destroy({
       where: {
         id: req.body.id,
@@ -274,6 +275,7 @@ const deleteProject = async (req, res) => {
       status: true,
     });
   } catch (err) {
+    console.log(err);
     res.json({
       status: false,
       error: err,
