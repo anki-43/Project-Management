@@ -6,6 +6,7 @@ export const projectStore = createSlice({
     projectList: [],
     currentProject: {},
     updateMode: false,
+    userDetails: {},
   },
   reducers: {
     addToProjectsList: (state, val) => {
@@ -29,6 +30,9 @@ export const projectStore = createSlice({
     },
     saveProjectList: (state, projectList) => {
       state.projectList = projectList.payload;
+    },
+    updateUerDetails: (state, details) => {
+      state.userDetails = details.payload;
     },
   },
 });

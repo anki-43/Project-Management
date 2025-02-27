@@ -104,7 +104,7 @@ function Login() {
                     placeholder="Enter password"
                   ></TextField>
                 </Grid>
-                <Grid item xs={12} size={12} fullWidth>
+                <Grid item xs={12} size={12}>
                   <Button
                     type="submit"
                     variant="contained"

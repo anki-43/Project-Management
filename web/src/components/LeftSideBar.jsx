@@ -3,11 +3,8 @@ import Tab from "@mui/material/Tab";
 import { useSelector, useDispatch } from "react-redux";
 import { changeActiveTabname } from "../features/mainTabs/mainTabsStore";
 import { Link } from "react-router-dom";
-import { Box } from "@mui/material";
-import { me } from "../authenticate";
 import HomeIcon from "@mui/icons-material/Home";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import HistoryIcon from "@mui/icons-material/History";
 
 function LeftSideBar() {
   const value = useSelector((state) => state.mainTabsStore.tabName);
@@ -26,24 +23,7 @@ function LeftSideBar() {
       name: "calendar",
       label: "Calendar",
     },
-    {
-      name: "history",
-      label: "History",
-    },
   ];
-
-  let user = undefined;
-
-  // useEffect(()=>{
-  me().then(
-    (res) => {
-      user = res;
-    },
-    (err) => {
-      console.log("err", err);
-    }
-  );
-  // }, [])
 
   return (
     <div className="leftSideBar">
@@ -61,22 +41,13 @@ function LeftSideBar() {
                 label={el.label}
                 value={i}
                 key={el.label}
-                sx={{ width: '100%' }}
-                icon={
-                  el.name == "home" ? (
-                    <HomeIcon />
-                  ) : el.name == "calendar" ? (
-                    <CalendarMonthIcon />
-                  ) : (
-                    <HistoryIcon />
-                  )
-                }
+                sx={{ width: "100%" }}
+                icon={el.name == "home" ? <HomeIcon /> : <CalendarMonthIcon />}
                 iconPosition="start"
               />
             </Link>
           ))}
         </Tabs>
-        <Box>{user?.username}</Box>
       </div>
     </div>
   );
