@@ -3,7 +3,6 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { me } from "../../authenticate";
 import { Divider } from "@mui/material";

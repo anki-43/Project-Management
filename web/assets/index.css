@@ -14,18 +14,6 @@ body {
   overflow: hidden;
 }
 
-.leftSideBar {
-  flex: 3;
-  margin: 10px 0 20px 40px;
-}
-
-.leftSideBar .content {
-  flex: 5;
-  background-color: #f2f2f2;
-  height: 100%;
-  border-radius: 10px;
-}
-
 .fc.fc-media-screen {
   height: 100%;
   background: rgb(251, 251, 249);
@@ -43,4 +31,14 @@ body {
 .section {
   flex: 10;
   overflow-y: auto;
+}
+
+.openDrawer {
+  transition: all ease-out 0.3s;
+  flex: 3;
+}
+
+.closeDrawer {
+  transition: all ease-in 0.3s;
+  flex: 0.5;
 }
