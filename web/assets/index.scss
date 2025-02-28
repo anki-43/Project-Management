@@ -13,6 +13,16 @@
           padding-left: 25%;
           gap: 20px;
           min-height: 0;
+
+          &:active {
+            background-color: #1565c0;
+            color: white;
+          }
+
+          &:visited {
+            background: inherit;
+            color: inherit;
+          }
         }
       }
     }

@@ -6,11 +6,12 @@ import {
   Toolbar,
   IconButton,
   Typography,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import LeftSideBar from "./LeftSideBar";
-import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useMyContext } from "../MyContext";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CommonHeader from "./sectionComponents/commonHeader";
 import { Link } from "react-router-dom";
@@ -45,7 +46,33 @@ function DetailView() {
           <Header></Header>
           <Card>
             <CardHeader title={project.projectName}></CardHeader>
-            <CardContent>{JSON.stringify(project)}</CardContent>
+            <CardContent>
+              <List>
+                {Object.keys(project).map((el) => {
+                  if (
+                    [
+                      "description",
+                      "startDate",
+                      "endDate",
+                      "budget",
+                      "projectManager",
+                    ].includes(el)
+                  ) {
+                    return (
+                      <ListItem key={el}>
+                        <ListItemText
+                          primary={`${el.toUpperCase()} : ${project[el]}`}
+                        />
+                      </ListItem>
+                    );
+                  }
+                })}
+
+                {/* <ListItem>
+                  <ListItemText primary="Spam" />
+                </ListItem> */}
+              </List>
+            </CardContent>
           </Card>
         </Box>
       </Box>

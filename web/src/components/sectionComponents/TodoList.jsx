@@ -97,7 +97,7 @@ const Footer = (props) => {
       justifyContent="space-around"
       alignItems="center"
       padding={1}
-      bgcolor="#f5f5f5"
+      bgcolor="#d1d5de"
       borderTop="1px solid #ddd"
     >
       <Link to={"/editProject/" + props.project.id} key={"editView"}>
