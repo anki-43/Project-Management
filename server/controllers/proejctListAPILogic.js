@@ -283,10 +283,31 @@ const deleteProject = async (req, res) => {
   }
 };
 
+const getAppointments = async (req, res) => {
+  try {
+    const milestones = await Milestone.findAll();
+    const tasks = await Task.findAll();
+
+    res.json({
+      status: true,
+      list: {
+        milestones,
+        tasks,
+      },
+    });
+  } catch (err) {
+    res.json({
+      status: false,
+      error: err,
+    });
+  }
+};
+
 module.exports = {
   getAllProjectList,
   getProject,
   updateProject,
   createProject,
   deleteProject,
+  getAppointments,
 };

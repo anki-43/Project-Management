@@ -37,7 +37,7 @@ function DetailView() {
 
   return (
     <div className="App">
-      <Box sx={{ padding: "10px 0 0 40px", flex: 1 }}>
+      <Box sx={{ padding: "10px 0 0 40px" }}>
         <CommonHeader className="headerClass" />
       </Box>
       <Box sx={{ display: "flex", gap: "20px", flex: 9, height: "90vh" }}>
@@ -71,44 +71,63 @@ function DetailView() {
 
                   if (el == "tasks") {
                     return (
-                      <ListItem key={el}>
-                        {project[el].map((task) => {
-                          return (
-                            <ListItemText
-                              primary={<Task task={task} />}
-                              key={el}
-                            />
-                          );
-                        })}
-                      </ListItem>
+                      <>
+                        <ListItem sx={{ fontWeight: "700", fontSize: "18px" }}>
+                          Tasks
+                        </ListItem>
+                        <ListItem key={el}>
+                          {project[el].map((task) => {
+                            return (
+                              <ListItemText
+                                primary={<Task task={task} />}
+                                key={el}
+                              />
+                            );
+                          })}
+                        </ListItem>
+                      </>
                     );
                   }
 
                   if (el == "milestones") {
                     return (
-                      <ListItem key={el}>
-                        {project[el].map((milestone) => {
-                          return (
-                            <ListItemText
-                              primary={
-                                <Milestone milestone={milestone} key={el} />
-                              }
-                            />
-                          );
-                        })}
-                      </ListItem>
+                      <>
+                        <ListItem
+                          sx={{ fontWeight: "700", fontSize: "18px", mt: 2 }}
+                        >
+                          Milestones
+                        </ListItem>
+                        <ListItem key={el}>
+                          {project[el].map((milestone) => {
+                            return (
+                              <ListItemText
+                                primary={<Milestone milestone={milestone} />}
+                                key={el}
+                              />
+                            );
+                          })}
+                        </ListItem>
+                      </>
                     );
                   }
 
                   if (el == "risks") {
                     return (
-                      <ListItem key={el}>
-                        {project[el]?.map((risk) => {
-                          return (
-                            <ListItemText primary={<Risk risk={risk} />} />
-                          );
-                        })}
-                      </ListItem>
+                      <>
+                        <ListItem sx={{ fontWeight: "700", fontSize: "18px" }}>
+                          Risks
+                        </ListItem>
+                        <ListItem key={el}>
+                          {project[el]?.map((risk) => {
+                            return (
+                              <ListItemText
+                                primary={<Risk risk={risk} />}
+                                key={el}
+                              />
+                            );
+                          })}
+                        </ListItem>
+                      </>
                     );
                   }
                   return <span style={{ display: "none" }}></span>;
@@ -156,6 +175,7 @@ function Task(props) {
               <ListItem key={el}>
                 <ListItemText
                   primary={`${el.toUpperCase()} : ${props.task[el]}`}
+                  key={el}
                 />
               </ListItem>
             );
@@ -169,43 +189,49 @@ function Task(props) {
 }
 
 function Risk(props) {
-  <Box>
-    <List>
-      {Object.keys(props.risk).map((el) => {
-        if (["description", "impact", "mitigationPlan"].includes(el)) {
-          return (
-            <ListItem key={el}>
-              <ListItemText
-                primary={`${el.toUpperCase()} : ${props.risk[el]}`}
-              />
-            </ListItem>
-          );
-        }
+  return (
+    <Box>
+      <List>
+        {Object.keys(props.risk).map((el) => {
+          if (["description", "impact", "mitigationPlan"].includes(el)) {
+            return (
+              <ListItem key={el}>
+                <ListItemText
+                  primary={`${el.toUpperCase()} : ${props.risk[el]}`}
+                  key={el}
+                />
+              </ListItem>
+            );
+          }
 
-        return <span style={{ display: "none" }}></span>;
-      })}
-    </List>
-  </Box>;
+          return <span style={{ display: "none" }}></span>;
+        })}
+      </List>
+    </Box>
+  );
 }
 
 function Milestone(props) {
-  <Box>
-    <List>
-      {Object.keys(props.milestone).map((el) => {
-        if (["name", "dueDate", "status"].includes(el)) {
-          return (
-            <ListItem key={el}>
-              <ListItemText
-                primary={`${el.toUpperCase()} : ${props.milestone[el]}`}
-              />
-            </ListItem>
-          );
-        }
+  return (
+    <Box>
+      <List>
+        {Object.keys(props.milestone).map((el) => {
+          if (["name", "dueDate", "status"].includes(el)) {
+            return (
+              <ListItem key={el}>
+                <ListItemText
+                  primary={`${el.toUpperCase()} : ${props.milestone[el]}`}
+                  key={el}
+                />
+              </ListItem>
+            );
+          }
 
-        return <span style={{ display: "none" }}></span>;
-      })}
-    </List>
-  </Box>;
+          return <span style={{ display: "none" }}></span>;
+        })}
+      </List>
+    </Box>
+  );
 }
 
 export default DetailView;

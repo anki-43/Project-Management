@@ -42,3 +42,8 @@ body {
   transition: all ease-in 0.3s;
   flex: 0.5;
 }
+
+.MuiListItem-root {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}

@@ -29,7 +29,7 @@ function App() {
 function Home() {
   return (
     <div className="App">
-      <Box sx={{ padding: "20px 0 0 30px", flex: 1 }}>
+      <Box sx={{ padding: "10px 0 0 40px" }}>
         <CommonHeader className="headerClass"></CommonHeader>
       </Box>
       <Box sx={{ display: "flex", gap: "20px", flex: 9, height: "90vh" }}>

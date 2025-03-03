@@ -6,6 +6,7 @@ const {
   updateProject,
   createProject,
   deleteProject,
+  getAppointments,
 } = require("../controllers/proejctListAPILogic");
 const authenticate = require("../middlewares/authenticate");
 
@@ -18,5 +19,6 @@ router.post("/project", getProject);
 router.post("/updateProject", updateProject);
 router.post("/createProject", createProject);
 router.post("/deleteProject", deleteProject);
+router.get("/getAppointments", getAppointments);
 
 module.exports = router;

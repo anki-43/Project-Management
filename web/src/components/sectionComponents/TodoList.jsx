@@ -27,13 +27,9 @@ function ProjectCard({ project }) {
     <Card>
       <CardContent>
         <Typography variant="h4">{project?.projectName}</Typography>
-        <Typography variant="body1">{project?.description}</Typography>
-        {/* <Typography variant="h6">
-          Project Manager: {project?.projectManager.join(", ")}
-        </Typography>
         <Typography variant="h6">
-          Team Members: {project?.teamMembers.join(", ")}
-        </Typography> */}
+          Description : {project?.description}
+        </Typography>
         <Typography variant="h6">Budget: ${project?.budget}</Typography>
         <Typography variant="h6">
           Duration: {new Date(project?.startDate).toLocaleDateString()} to{" "}
