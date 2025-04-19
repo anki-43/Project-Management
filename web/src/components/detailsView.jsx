@@ -10,6 +10,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import LeftSideBar from "./LeftSideBar";
 import { useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -45,9 +46,12 @@ function DetailView() {
         <Box className="section">
           <Header></Header>
           <Card>
-            <CardHeader title={project.projectName}></CardHeader>
+            <CardHeader
+              title={project.projectName}
+              sx={{ background: "#f2f2f2", padding: "10px" }}
+            ></CardHeader>
             <CardContent>
-              <List>
+              <Grid container spacing={2}>
                 {Object.keys(project).map((el) => {
                   if (
                     [
@@ -60,31 +64,34 @@ function DetailView() {
                     ].includes(el)
                   ) {
                     return (
-                      <ListItem key={el}>
-                        <ListItemText
-                          primary={`${el.toUpperCase()} : ${project[el]}`}
-                          key={el}
-                        />
-                      </ListItem>
+                      <>
+                        <Grid size={4}>
+                          <span>{el.toUpperCase()}</span>
+                        </Grid>
+                        <Grid size={8}>
+                          <span>: {project[el]}</span>
+                        </Grid>
+                      </>
                     );
                   }
 
                   if (el == "tasks") {
                     return (
                       <>
-                        <ListItem sx={{ fontWeight: "700", fontSize: "18px" }}>
+                        <Grid
+                          size={12}
+                          sx={{
+                            fontWeight: "700",
+                            fontSize: "18px",
+                            background: "#f2f2f2",
+                            padding: "5px",
+                          }}
+                        >
                           Tasks
-                        </ListItem>
-                        <ListItem key={el}>
-                          {project[el].map((task) => {
-                            return (
-                              <ListItemText
-                                primary={<Task task={task} />}
-                                key={el}
-                              />
-                            );
-                          })}
-                        </ListItem>
+                        </Grid>
+                        {project[el].map((task) => {
+                          return <Task task={task} key={task.id} />;
+                        })}
                       </>
                     );
                   }
@@ -92,21 +99,25 @@ function DetailView() {
                   if (el == "milestones") {
                     return (
                       <>
-                        <ListItem
-                          sx={{ fontWeight: "700", fontSize: "18px", mt: 2 }}
+                        <Grid
+                          size={12}
+                          sx={{
+                            fontWeight: "700",
+                            fontSize: "18px",
+                            background: "#f2f2f2",
+                            padding: "5px",
+                          }}
                         >
                           Milestones
-                        </ListItem>
-                        <ListItem key={el}>
-                          {project[el].map((milestone) => {
-                            return (
-                              <ListItemText
-                                primary={<Milestone milestone={milestone} />}
-                                key={el}
-                              />
-                            );
-                          })}
-                        </ListItem>
+                        </Grid>
+                        {project[el].map((milestone) => {
+                          return (
+                            <Milestone
+                              milestone={milestone}
+                              key={milestone.id}
+                            />
+                          );
+                        })}
                       </>
                     );
                   }
@@ -114,25 +125,25 @@ function DetailView() {
                   if (el == "risks") {
                     return (
                       <>
-                        <ListItem sx={{ fontWeight: "700", fontSize: "18px" }}>
+                        <Grid
+                          size={12}
+                          sx={{
+                            fontWeight: "700",
+                            fontSize: "18px",
+                            background: "#f2f2f2",
+                            padding: "5px",
+                          }}
+                        >
                           Risks
-                        </ListItem>
-                        <ListItem key={el}>
-                          {project[el]?.map((risk) => {
-                            return (
-                              <ListItemText
-                                primary={<Risk risk={risk} />}
-                                key={el}
-                              />
-                            );
-                          })}
-                        </ListItem>
+                        </Grid>
+                        {project[el].map((risk) => {
+                          return <Risk risk={risk} key={risk.id} />;
+                        })}
                       </>
                     );
                   }
-                  return <span style={{ display: "none" }}></span>;
                 })}
-              </List>
+              </Grid>
             </CardContent>
           </Card>
         </Box>
@@ -158,8 +169,8 @@ function Header() {
 
 function Task(props) {
   return (
-    <Box>
-      <List>
+    <>
+      <Grid container spacing={2} size={12}>
         {Object.keys(props.task).map((el) => {
           if (
             [
@@ -172,65 +183,65 @@ function Task(props) {
             ].includes(el)
           ) {
             return (
-              <ListItem key={el}>
-                <ListItemText
-                  primary={`${el.toUpperCase()} : ${props.task[el]}`}
-                  key={el}
-                />
-              </ListItem>
+              <>
+                <Grid size={4}>
+                  <span>{el.toUpperCase()}</span>
+                </Grid>
+                <Grid size={8}>
+                  <span>: {props.task[el]}</span>
+                </Grid>
+              </>
             );
           }
-
-          return <span style={{ display: "none" }}></span>;
         })}
-      </List>
-    </Box>
+      </Grid>
+    </>
   );
 }
 
 function Risk(props) {
   return (
-    <Box>
-      <List>
+    <>
+      <Grid container spacing={2} size={12}>
         {Object.keys(props.risk).map((el) => {
           if (["description", "impact", "mitigationPlan"].includes(el)) {
             return (
-              <ListItem key={el}>
-                <ListItemText
-                  primary={`${el.toUpperCase()} : ${props.risk[el]}`}
-                  key={el}
-                />
-              </ListItem>
+              <>
+                <Grid size={4}>
+                  <span>{el.toUpperCase()}</span>
+                </Grid>
+                <Grid size={8}>
+                  <span>: {props.risk[el]}</span>
+                </Grid>
+              </>
             );
           }
-
-          return <span style={{ display: "none" }}></span>;
         })}
-      </List>
-    </Box>
+      </Grid>
+    </>
   );
 }
 
 function Milestone(props) {
   return (
-    <Box>
-      <List>
+    <>
+      <Grid container spacing={2} size={12}>
         {Object.keys(props.milestone).map((el) => {
           if (["name", "dueDate", "status"].includes(el)) {
             return (
-              <ListItem key={el}>
-                <ListItemText
-                  primary={`${el.toUpperCase()} : ${props.milestone[el]}`}
-                  key={el}
-                />
-              </ListItem>
+              <>
+                <Grid size={4}>
+                  <span>{el.toUpperCase()}</span>
+                </Grid>
+                <Grid size={8}>
+                  <span>: {props.milestone[el]}</span>
+                </Grid>
+              </>
             );
           }
-
-          return <span style={{ display: "none" }}></span>;
         })}
-      </List>
-    </Box>
+      </Grid>
+    </>
   );
 }
 

@@ -1,15 +1,18 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import LeftSideBar from "../LeftSideBar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import timeGridPlugin from "@fullcalendar/timegrid"; // a plugin!
 import CommonHeader from "./commonHeader";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
 
 function CalendarInstance() {
   const [list, setList] = useState({});
   const [events, setEvents] = useState([]);
+  const calendarRef = useRef(null);
+
   const fetchList = async () => {
     const response = await axios.get(
       "http://localhost:8081/proj/getAppointments"
@@ -43,16 +46,46 @@ function CalendarInstance() {
     setEvents([...milestonesEvents, ...tasksEvents]);
   }
 
+  // Function to change the view programmatically
+  const handleViewChange = (view) => {
+    const calendarApi = calendarRef.current.getApi(); // Access FullCalendar API
+    calendarApi.changeView(view); // Change the view
+  };
+
   return (
     <Box className="section">
+      <Box
+        sx={{
+          marginBottom: "10px",
+          display: "flex",
+          flexDirection: "row",
+          gap: "10px",
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={() => handleViewChange("dayGridMonth")}
+        >
+          Month
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleViewChange("timeGridWeek")}
+        >
+          Week
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleViewChange("timeGridDay")}
+        >
+          Day
+        </Button>
+      </Box>
       <FullCalendar
-        plugins={[dayGridPlugin]}
-        initialView="dayGridMonth"
+        ref={calendarRef} // Attach the ref to FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin]}
+        initialView="dayGridMonth" // Set the default view
         events={events}
-        // events={[
-        //   { title: "event 1", date: "2025-04-01" },
-        //   { title: "event 2", date: "2025-04-02" },
-        // ]}
       />
     </Box>
   );

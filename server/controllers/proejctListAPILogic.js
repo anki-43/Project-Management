@@ -77,8 +77,8 @@ const updateProject = async (req, res) => {
         }
       );
 
-      project.tasks.forEach(async (task) => {
-        let taskExists = Task.findByPk(task.id);
+      for (const task of project.tasks) {
+        let taskExists = await Task.findByPk(task.id);
         if (taskExists) {
           const [taskResult, _] = await sequelize.query(
             "UPDATE tasks SET name = ?, dueDate = ?, status =  ?, description = ?, assignedTo = ?, priority = ? WHERE id = ?",
@@ -96,7 +96,6 @@ const updateProject = async (req, res) => {
           );
           if (taskResult.affectedRows === 0) {
             console.log("project not found. Task");
-            // await t.rollback();
             return;
           }
         } else {
@@ -116,11 +115,10 @@ const updateProject = async (req, res) => {
           );
           if (taskResult.affectedRows === 0) {
             console.log("project not found. Task");
-            // await t.rollback();
             return;
           }
         }
-      });
+      }
 
       project.milestones.forEach(async (milestone) => {
         let milestoneExists = Milestone.findByPk(milestone.id);

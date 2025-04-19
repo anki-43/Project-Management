@@ -44,3 +44,51 @@
   background-color: #ddddde;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
+
+.fc {
+  .fc-col-header-cell {
+    color: white;
+    background-color: #1565c0;
+    padding: 10px;
+  }
+
+  .fc-day-today.fc-col-header-cell {
+    background-color: #c0f9d5;
+    color: black;
+  }
+
+  .fc-day-today {
+    .fc-timegrid-slot {
+      background-color: #c0c0f9;
+    }
+  }
+
+  .fc-daygrid-day-frame {
+    // display: none;
+  }
+
+  .fc-timegrid-slot-label-cushion {
+    // color: #a2acf9;
+  }
+
+  .fc-today-button,
+  .fc-prev-button,
+  .fc-next-button {
+    background-color: #1565c0 !important;
+    color: white;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #0d47a1;
+      color: white;
+    }
+  }
+
+  .fc-toolbar-chunk {
+    font-weight: 400;
+    font-size: 14px;
+  }
+}
