@@ -8,51 +8,79 @@ const {
 } = require("../models/association");
 
 const getAllProjectList = async (req, res) => {
-  const projects = await Project.findAll({
-    include: [
-      {
-        model: Milestone,
-        as: "milestones",
-      },
-      {
-        model: Task,
-        as: "tasks",
-      },
-      {
-        model: Risk,
-        as: "risks",
-      },
-    ],
-  });
+  try {
+    const projects = await Project.findAll({
+      include: [
+        {
+          model: Milestone,
+          as: "milestones",
+        },
+        {
+          model: Task,
+          as: "tasks",
+        },
+        {
+          model: Risk,
+          as: "risks",
+        },
+      ],
+    });
 
-  res.json({
-    status: true,
-    projects: projects,
-  });
+    res.status(200).json({
+      status: true,
+      projects: projects,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: false,
+      errorMessage: "Failed to fetch project list.",
+      error: err.message,
+    });
+  }
 };
 
 const getProject = async (req, res) => {
-  let project = await Project.findOne({
-    where: {
-      id: req.body.id,
-    },
-    include: [
-      {
-        model: Milestone,
-        as: "milestones",
+  try {
+    let project = await Project.findOne({
+      where: {
+        id: req.body.id,
       },
-      {
-        model: Task,
-        as: "tasks",
-      },
-      {
-        model: Risk,
-        as: "risks",
-      },
-    ],
-  });
-  console.log("project", project);
-  res.json(project);
+      include: [
+        {
+          model: Milestone,
+          as: "milestones",
+        },
+        {
+          model: Task,
+          as: "tasks",
+        },
+        {
+          model: Risk,
+          as: "risks",
+        },
+      ],
+    });
+
+    if (!project) {
+      return res.status(404).json({
+        status: false,
+        errorMessage: "Project not found.",
+      });
+    }
+
+    res.status(200).json({
+      status: true,
+      project: project,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: false,
+      errorMessage: "Failed to fetch project",
+      error: err.message,
+    });
+  }
 };
 
 const updateProject = async (req, res) => {
@@ -60,24 +88,41 @@ const updateProject = async (req, res) => {
 
   try {
     const project = req.body;
-    if (req?.body) {
-      const [results, _] = await sequelize.query(
-        "UPDATE projects SET projectName = ?, description = ?, startDate =  ?, endDate = ?, projectManager = ?, budget = ?, teamMembers = ? WHERE id = ?",
-        {
-          replacements: [
-            project.projectName,
-            project.description,
-            project.startDate,
-            project.endDate,
-            project.projectManager,
-            project.budget,
-            project.teamMembers.join(""),
-            project.id,
-          ],
-        }
-      );
 
-      for (const task of project.tasks) {
+    if (!project || !project.id) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid project data.",
+      });
+    }
+
+    const [results, _] = await sequelize.query(
+      "UPDATE projects SET projectName = ?, description = ?, startDate =  ?, endDate = ?, projectManager = ?, budget = ?, teamMembers = ? WHERE id = ?",
+      {
+        replacements: [
+          project.projectName,
+          project.description,
+          project.startDate,
+          project.endDate,
+          project.projectManager,
+          project.budget,
+          project.teamMembers.join(","),
+          project.id,
+        ],
+      }
+    );
+
+    if (results.affectedRows === 0) {
+      await t.rollback();
+      return res.status(404).json({
+        status: false,
+        message: "Project not found.",
+      });
+    }
+
+    //update/insert tasks
+    for (const task of project.tasks) {
+      try {
         let taskExists = await Task.findByPk(task.id);
         if (taskExists) {
           const [taskResult, _] = await sequelize.query(
@@ -95,8 +140,7 @@ const updateProject = async (req, res) => {
             }
           );
           if (taskResult.affectedRows === 0) {
-            console.log("project not found. Task");
-            return;
+            throw new Error("Failed to update task.");
           }
         } else {
           const [taskResult, _] = await sequelize.query(
@@ -114,13 +158,21 @@ const updateProject = async (req, res) => {
             }
           );
           if (taskResult.affectedRows === 0) {
-            console.log("project not found. Task");
-            return;
+            throw new Error("Failed to insert task.");
           }
         }
+      } catch (err) {
+        await t.rollback();
+        return res.status(500).json({
+          status: false,
+          erroeMessage: err.message,
+        });
       }
+    }
 
-      project.milestones.forEach(async (milestone) => {
+    //update/insert milestones
+    for (const milestone of project.milestones) {
+      try {
         let milestoneExists = Milestone.findByPk(milestone.id);
         if (milestoneExists) {
           const [milestoneResult, _] = await sequelize.query(
@@ -135,9 +187,7 @@ const updateProject = async (req, res) => {
             }
           );
           if (milestoneResult.affectedRows === 0) {
-            console.log("project not found. Milestone");
-            // await t.rollback();
-            return;
+            throw new Error("Failed to update milestone.");
           }
         } else {
           const [milestoneResult, _] = await sequelize.query(
@@ -152,14 +202,21 @@ const updateProject = async (req, res) => {
             }
           );
           if (milestoneResult.affectedRows === 0) {
-            console.log("project not found. Milestone");
-            // await t.rollback();
-            return;
+            throw new Error("Failed to insert milestone.");
           }
         }
-      });
+      } catch (err) {
+        await t.rollback();
+        return res.status(500).json({
+          status: false,
+          erroeMessage: err.message,
+        });
+      }
+    }
 
-      project.risks.forEach(async (risk) => {
+    //update/insert risks
+    for (const risk of project.risks) {
+      try {
         let riskExists = Risk.findByPk(risk.id);
         if (riskExists) {
           const [riskResult, _] = await sequelize.query(
@@ -174,9 +231,7 @@ const updateProject = async (req, res) => {
             }
           );
           if (riskResult.affectedRows === 0) {
-            console.log("project not found. Risk");
-            // await t.rollback();
-            return;
+            throw new Error("Failed to update risk.");
           }
         } else {
           const [riskResult, _] = await sequelize.query(
@@ -191,92 +246,119 @@ const updateProject = async (req, res) => {
             }
           );
           if (riskResult.affectedRows === 0) {
-            console.log("project not found. Risk");
-            // await t.rollback();
-            return;
+            throw new Error("Failed to insert milestone.");
           }
         }
-      });
-
-      await t.commit();
-      res.json({
-        status: true,
-        message: "Project created succesfully",
-      });
+      } catch (err) {
+        await t.rollback();
+        return res.status(500).json({
+          status: false,
+          erroeMessage: err.message,
+        });
+      }
     }
+
+    await t.commit();
+    res.status(201).json({
+      status: true,
+      message: "Project created succesfully",
+    });
   } catch (err) {
-    console.log(err);
-    res.json({
+    console.error(err);
+    res.status(500).json({
       status: false,
-      erroeMessage: err,
+      errorMessage: err,
     });
   }
 };
 
 const createProject = async (req, res) => {
   try {
-    if (req?.body) {
-      const pro = await Project.create(
-        {
-          projectName: req.body.projectName,
-          description: req.body.description,
-          startDate: req.body.startDate,
-          endDate: req.body.endDate,
-          projectManager: req.body.projectManager,
-          budget: req.body.budget,
-          teamMembers: req.body.teamMembers.join(""),
-          milestones: req.body.milestones,
-          tasks: req.body.tasks,
-          risks: req.body.risks,
-        },
-        {
-          include: [
-            {
-              model: Milestone,
-              as: "milestones",
-            },
-            {
-              model: Risk,
-              as: "risks",
-            },
-            {
-              model: Task,
-              as: "tasks",
-            },
-          ],
-        }
-      );
-      res.json({
-        status: true,
-        message: "Project created succesfully",
+    const projectData = req.body;
+
+    if (!projectData) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid project data.",
       });
     }
+
+    const pro = await Project.create(
+      {
+        projectName: projectData.projectName,
+        description: projectData.description,
+        startDate: projectData.startDate,
+        endDate: projectData.endDate,
+        projectManager: projectData.projectManager,
+        budget: projectData.budget,
+        teamMembers: projectData.teamMembers.join(","),
+        milestones: projectData.milestones,
+        tasks: projectData.tasks,
+        risks: projectData.risks,
+      },
+      {
+        include: [
+          {
+            model: Milestone,
+            as: "milestones",
+          },
+          {
+            model: Risk,
+            as: "risks",
+          },
+          {
+            model: Task,
+            as: "tasks",
+          },
+        ],
+      }
+    );
+    res.status(201).json({
+      status: true,
+      message: "Project created succesfully",
+    });
   } catch (err) {
-    console.log(err);
-    res.json({
+    console.error(err);
+    res.status(500).json({
       status: false,
-      erroeMessage: err,
+      errorMessage: "Failed to create project.",
+      error: err.message,
     });
   }
 };
 
 const deleteProject = async (req, res) => {
   try {
-    console.log(req.body);
-    await Project.destroy({
+    const { id } = req.body;
+
+    if (!id) {
+      return res.status(400).json({
+        status: false,
+        message: "Project ID is required.",
+      });
+    }
+    const deleted = await Project.destroy({
       where: {
         id: req.body.id,
       },
     });
+    if (!deleted) {
+      return res.status(404).json({
+        status: false,
+        message: "Project not found.",
+      });
+    }
 
-    res.json({
+    res.status(200).json({
       status: true,
+      message: "Project deleted successfully.",
     });
   } catch (err) {
-    console.log(err);
-    res.json({
+    console.error(err);
+    res.status(500).json({
       status: false,
-      error: err,
+      errorMessage: "Failed to delete project.",
+      error: err.message,
     });
   }
 };
@@ -286,7 +368,7 @@ const getAppointments = async (req, res) => {
     const milestones = await Milestone.findAll();
     const tasks = await Task.findAll();
 
-    res.json({
+    res.status(200).json({
       status: true,
       list: {
         milestones,
@@ -294,9 +376,11 @@ const getAppointments = async (req, res) => {
       },
     });
   } catch (err) {
-    res.json({
+    console.error(err);
+    res.status(500).json({
       status: false,
-      error: err,
+      errorMessage: "Failed to fetch appointments.",
+      error: err.message,
     });
   }
 };
