@@ -5,6 +5,10 @@
   flex-direction: column;
 }
 
+.login {
+  overflow: scroll;
+}
+
 * {
   padding: 0;
   margin: 0;

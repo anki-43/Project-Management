@@ -25,12 +25,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useSelector, useDispatch } from "react-redux";
-import { addToProjectsList } from "../features/projectDetails/projectStore";
 import { useMyContext } from "../MyContext";
 import dayjs from "dayjs";
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CommonHeader from "./sectionComponents/commonHeader";
 import LeftSideBar from "./LeftSideBar";
 import axios from "axios";
@@ -45,23 +43,25 @@ function EditProject() {
       id: id,
     });
 
+    const projectData = response.data.project;
+
     setProject({
-      ...response.data,
-      projectManager: [response.data.projectManager],
-      teamMembers: response.data.teamMembers.split(","),
-      risks: response.data.risks?.length
-        ? response.data.risks
+      ...projectData,
+      projectManager: [projectData.projectManager],
+      teamMembers: projectData.teamMembers,
+      risks: projectData.risks?.length
+        ? projectData.risks
         : [{ id: uuidv4(), description: "", impact: "", mitigationPlan: "" }],
-      milestones: response.data.milestones?.length
-        ? response.data.milestones.map((el) => {
+      milestones: projectData.milestones?.length
+        ? projectData.milestones.map((el) => {
             return {
               ...el,
               dueDate: dayjs(el.dueDate).format("YYYY-MM-DD"),
             };
           })
         : [{ id: uuidv4(), name: "", dueDate: null, status: "" }],
-      tasks: response.data.tasks?.length
-        ? response.data.tasks.map((el) => {
+      tasks: projectData.tasks?.length
+        ? projectData.tasks.map((el) => {
             return {
               ...el,
               dueDate: dayjs(el.dueDate).format("YYYY-MM-DD"),

@@ -6,9 +6,6 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import LeftSideBar from "./LeftSideBar";
@@ -29,7 +26,7 @@ function DetailView() {
       id: id,
     });
     console.log(response);
-    setProject(response.data);
+    setProject(response.data.project);
   };
 
   useEffect(() => {
