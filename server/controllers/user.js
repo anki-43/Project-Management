@@ -1,5 +1,6 @@
 const { response } = require("express");
 const { User } = require("../models/association");
+const bcrypt = require("bcrypt");
 
 const registerUser = async (req, res) => {
   try {
@@ -20,10 +21,14 @@ const registerUser = async (req, res) => {
       });
     }
 
+    // Hash the password
+    const saltRounds = 10; // Number of salt rounds
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     const user = await User.create({
       email,
       username,
-      password,
+      password: hashedPassword,
     });
     req.session.userId = user.id;
     res.status(201).json({
@@ -88,21 +93,22 @@ const login = async (req, res) => {
       });
     }
 
-    if (user.password === req.body.password) {
-      req.session.userId = user.id;
-      res.send({
-        status: true,
-        user: {
-          username: user.username,
-          email: user.email,
-        },
-      });
-    } else {
-      res.send({
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({
         status: false,
-        errorMessage: "Invalid password",
+        message: "Invalid password.",
       });
     }
+
+    req.session.userId = user.id;
+    res.status(200).json({
+      status: true,
+      user: {
+        username: user.username,
+        email: user.email,
+      },
+    });
   } catch (err) {
     res.send({
       status: false,
