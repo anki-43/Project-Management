@@ -5,11 +5,14 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { me } from "../../authenticate";
-import { Divider } from "@mui/material";
+import { Divider, IconButton } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CommonHeader() {
   const [user, updateUser] = useState(undefined);
-
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchMe() {
       let user = await me();
@@ -18,6 +21,15 @@ function CommonHeader() {
 
     fetchMe();
   }, []);
+
+  const handleLogout = async () => {
+    const response = await axios.get("http://localhost:8081/user/logout");
+    if (response.data.status) {
+      navigate("/");
+    } else {
+      console.error("Logout failed:", response.data.errorMessage);
+    }
+  };
 
   return (
     <>
@@ -56,6 +68,16 @@ function CommonHeader() {
           >
             Welcome, {user?.username}
           </Typography>
+          <Box>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={() => handleLogout()}
+              aria-label="back"
+            >
+              <LogoutIcon></LogoutIcon>
+            </IconButton>
+          </Box>
         </Box>
       </Box>
       <Divider sx={{ mt: "10px" }}></Divider>

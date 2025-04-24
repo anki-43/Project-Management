@@ -72,7 +72,7 @@ const login = async (req, res) => {
     if (!username || !password) {
       return res.status(400).json({
         status: false,
-        message: "Username and password are required.",
+        errorMessage: "Username and Password are required.",
       });
     }
     let user = await User.findOne({
@@ -89,7 +89,8 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         status: false,
-        message: "User not found.",
+        errorMessage:
+          "No account found with the provided credentials. Please check your details or register for a new account.",
       });
     }
 
@@ -97,7 +98,7 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({
         status: false,
-        message: "Invalid password.",
+        errorMessage: "Invalid password.",
       });
     }
 

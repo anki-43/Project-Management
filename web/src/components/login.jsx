@@ -17,6 +17,8 @@ function Login() {
   };
 
   let [errorInSubmitForm, setErrorInSubmitForm] = useState(false);
+  let [errorMsg, setErrorMsg] = useState("");
+
   const navigate = useNavigate();
 
   async function loginUser(payload) {
@@ -25,12 +27,13 @@ function Login() {
         username: payload.username,
         password: payload.password,
       });
+      console.log(response.data);
       if (response.data.status) {
         navigate("/home");
-      } else {
-        setErrorInSubmitForm(true);
       }
     } catch (error) {
+      setErrorInSubmitForm(true);
+      setErrorMsg(error.response.data.errorMessage);
       console.error(error);
     }
   }
@@ -123,14 +126,7 @@ function Login() {
           )}
         </Formik>
         <Box>
-          {errorInSubmitForm ? (
-            <Alert severity="error">
-              Account doesn't exist. Please{" "}
-              <a href="/register">Create an Acoount</a>
-            </Alert>
-          ) : (
-            ""
-          )}
+          {errorInSubmitForm ? <Alert severity="error">{errorMsg}</Alert> : ""}
         </Box>
       </Box>
     </div>
