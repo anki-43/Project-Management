@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 
 function CalendarInstance() {
-  const [list, setList] = useState({});
+  // const [list, setList] = useState({});
   const [events, setEvents] = useState([]);
   const calendarRef = useRef(null);
 
@@ -18,20 +18,21 @@ function CalendarInstance() {
       "http://localhost:8081/proj/getAppointments"
     );
     if (response.data.status) {
-      setList(response.data.list);
-      calculateEvents();
+      // setList(response.data.list);
+      calculateEvents(response.data.list);
     }
   };
   useEffect(() => {
     fetchList();
   }, []);
 
-  function calculateEvents() {
+  function calculateEvents(list) {
     let milestonesEvents =
       list?.milestones?.map((el) => {
         return {
           title: el.name,
-          date: dayjs(el.dueDate).format("YYYY-MM-DD"),
+          start: dayjs(el.dueDate).toISOString(), // Use ISO format for compatibility
+          end: dayjs(el.dueDate).add(1, "hour").toISOString(), // Optional: Add an end time
         };
       }) || [];
 
@@ -39,9 +40,11 @@ function CalendarInstance() {
       list?.tasks?.map((el) => {
         return {
           title: el.name,
-          date: dayjs(el.dueDate).format("YYYY-MM-DD"),
+          start: dayjs(el.dueDate).toISOString(), // Use ISO format for compatibility
+          end: dayjs(el.dueDate).add(1, "hour").toISOString(), // Optional: Add an end time
         };
       }) || [];
+
     console.log([...milestonesEvents, ...tasksEvents]);
     setEvents([...milestonesEvents, ...tasksEvents]);
   }
@@ -86,6 +89,8 @@ function CalendarInstance() {
         plugins={[dayGridPlugin, timeGridPlugin]}
         initialView="dayGridMonth" // Set the default view
         events={events}
+        duration={{ minutes: 60 }}
+        allDaySlot={false} // Optional: Hide the "all-day" slot
       />
     </Box>
   );

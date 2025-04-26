@@ -33,7 +33,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60,
     },
   })
 );
@@ -49,7 +49,7 @@ app.use("/user", userRoutes);
 app.use("/proj", projectRouter);
 app.use("/file", uploadFileRouter);
 
-sequelize.sync().then(
+sequelize.sync({ alter: true }).then(
   (res) => {
     console.log("success");
   },

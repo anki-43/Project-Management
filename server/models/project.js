@@ -37,6 +37,10 @@ const Project = sequelize.define("project", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  creatorId: {
+    type: Sequelize.INTEGER, // Or Sequelize.UUID if referencing a user
+    allowNull: false,
+  },
 });
 
 module.exports = Project;

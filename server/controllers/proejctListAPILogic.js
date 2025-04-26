@@ -8,8 +8,10 @@ const {
 } = require("../models/association");
 
 const getAllProjectList = async (req, res) => {
+  const userId = req.session.userId; // Get the logged-in user's ID
   try {
     const projects = await Project.findAll({
+      where: { creatorId: userId },
       include: [
         {
           model: Milestone,
@@ -42,9 +44,13 @@ const getAllProjectList = async (req, res) => {
 
 const getProject = async (req, res) => {
   try {
+    const userId = req.session.userId; // Get the logged-in user's ID
+    const projectId = req.body.id;
+
     let project = await Project.findOne({
       where: {
-        id: req.body.id,
+        id: projectId,
+        creatorId: userId, // Ensure the creatorId matches the logged-in user
       },
       include: [
         {
@@ -106,19 +112,23 @@ const updateProject = async (req, res) => {
           project.endDate,
           project.projectManager,
           project.budget,
-          project.teamMembers.join(","),
+          project.teamMembers,
           project.id,
         ],
       }
     );
 
-    if (results.affectedRows === 0) {
-      await t.rollback();
-      return res.status(404).json({
-        status: false,
-        message: "Project not found.",
-      });
-    }
+    // this error cannot be used bc for change in task/milestone/risk,
+    // there wont be any rows affected and so is the case for all commented errors below
+    // to avoid this, we need to calculae the delta of the tasks/milestones/risk and then update them
+
+    // if (results.affectedRows === 0) {
+    //   await t.rollback();
+    //   return res.status(404).json({
+    //     status: false,
+    //     message: "Project not found.",
+    //   });
+    // }
 
     //update/insert tasks
     for (const task of project.tasks) {
@@ -139,9 +149,9 @@ const updateProject = async (req, res) => {
               ],
             }
           );
-          if (taskResult.affectedRows === 0) {
-            throw new Error("Failed to update task.");
-          }
+          // if (taskResult.affectedRows === 0) {
+          //   throw new Error("Failed to update task.");
+          // }
         } else {
           const [taskResult, _] = await sequelize.query(
             "INSERT INTO tasks (name, dueDate, status, description , assignedTo , priority,  projectId) VALUES(?,?,?,?,?,?,?)",
@@ -157,9 +167,9 @@ const updateProject = async (req, res) => {
               ],
             }
           );
-          if (taskResult.affectedRows === 0) {
-            throw new Error("Failed to insert task.");
-          }
+          // if (taskResult.affectedRows === 0) {
+          //   throw new Error("Failed to insert task.");
+          // }
         }
       } catch (err) {
         await t.rollback();
@@ -186,9 +196,9 @@ const updateProject = async (req, res) => {
               ],
             }
           );
-          if (milestoneResult.affectedRows === 0) {
-            throw new Error("Failed to update milestone.");
-          }
+          // if (milestoneResult.affectedRows === 0) {
+          //   throw new Error("Failed to update milestone.");
+          // }
         } else {
           const [milestoneResult, _] = await sequelize.query(
             "INSERT INTO milestones (name, dueDate, status, projectId) VALUES(?,?,?,?)",
@@ -201,9 +211,9 @@ const updateProject = async (req, res) => {
               ],
             }
           );
-          if (milestoneResult.affectedRows === 0) {
-            throw new Error("Failed to insert milestone.");
-          }
+          // if (milestoneResult.affectedRows === 0) {
+          //   throw new Error("Failed to insert milestone.");
+          // }
         }
       } catch (err) {
         await t.rollback();
@@ -230,9 +240,9 @@ const updateProject = async (req, res) => {
               ],
             }
           );
-          if (riskResult.affectedRows === 0) {
-            throw new Error("Failed to update risk.");
-          }
+          // if (riskResult.affectedRows === 0) {
+          //   throw new Error("Failed to update risk.");
+          // }
         } else {
           const [riskResult, _] = await sequelize.query(
             "INSERT INTO risks (description, mitigationPlan, impact, projectId) VALUES(?,?,?,?)",
@@ -245,9 +255,9 @@ const updateProject = async (req, res) => {
               ],
             }
           );
-          if (riskResult.affectedRows === 0) {
-            throw new Error("Failed to insert milestone.");
-          }
+          // if (riskResult.affectedRows === 0) {
+          //   throw new Error("Failed to insert milestone.");
+          // }
         }
       } catch (err) {
         await t.rollback();
@@ -261,7 +271,7 @@ const updateProject = async (req, res) => {
     await t.commit();
     res.status(201).json({
       status: true,
-      message: "Project created succesfully",
+      message: "Project updated succesfully",
     });
   } catch (err) {
     console.error(err);
@@ -295,6 +305,7 @@ const createProject = async (req, res) => {
         milestones: projectData.milestones,
         tasks: projectData.tasks,
         risks: projectData.risks,
+        creatorId: req.session.userId,
       },
       {
         include: [
@@ -364,9 +375,23 @@ const deleteProject = async (req, res) => {
 };
 
 const getAppointments = async (req, res) => {
+  const userId = req.session.userId; // Get the logged-in user's ID
+
   try {
-    const milestones = await Milestone.findAll();
-    const tasks = await Task.findAll();
+    const milestones = await Milestone.findAll({
+      include: {
+        model: Project,
+        where: { creatorId: userId }, // Filter by creatorId
+        attributes: [], // Exclude project details from the response
+      },
+    });
+    const tasks = await Task.findAll({
+      include: {
+        model: Project,
+        where: { creatorId: userId }, // Filter by creatorId
+        attributes: [], // Exclude project details from the response
+      },
+    });
 
     res.status(200).json({
       status: true,

@@ -10,6 +10,18 @@ import { useNavigate } from "react-router-dom";
 // sends cookies alog with every request
 axios.defaults.withCredentials = true;
 
+// Axios interceptor to handle 401 errors
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Redirect to login page on session expiry
+      window.location.href = "/";
+    }
+    return Promise.reject(error);
+  }
+);
+
 function Login() {
   let initialValues = {
     username: "",
