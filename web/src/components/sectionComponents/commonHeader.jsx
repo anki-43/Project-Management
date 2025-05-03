@@ -23,7 +23,8 @@ function CommonHeader() {
   }, []);
 
   const handleLogout = async () => {
-    const response = await axios.get("http://localhost:8081/user/logout");
+    const API_BASE = process.env.REACT_APP_API_URL;
+    const response = await axios.get(API_BASE + "/user/logout");
     if (response.data.status) {
       navigate("/");
     } else {

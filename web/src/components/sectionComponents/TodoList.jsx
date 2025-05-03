@@ -22,6 +22,8 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const API_BASE = process.env.REACT_APP_API_URL;
+
 function ProjectCard({ project }) {
   return (
     <Card>
@@ -45,7 +47,7 @@ const TodoList = (props) => {
   const dispatch = useDispatch();
   let flag = true;
   const fetchList = async () => {
-    const response = await axios.get("http://localhost:8081/proj/projectList");
+    const response = await axios.get(API_BASE + "/proj/projectList");
     if (response.data.status) {
       dispatch(saveProjectList(response.data.projects || []));
       flag = true;
@@ -77,12 +79,9 @@ export default TodoList;
 const Footer = (props) => {
   const dispatch = useDispatch();
   const onDeleteClick = async (id) => {
-    const response = await axios.post(
-      "http://localhost:8081/proj/deleteProject",
-      {
-        id: id,
-      }
-    );
+    const response = await axios.post(API_BASE + "/proj/deleteProject", {
+      id: id,
+    });
 
     dispatch(deleteProject(id));
   };

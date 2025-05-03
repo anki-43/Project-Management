@@ -32,6 +32,8 @@ import LeftSideBar from "./LeftSideBar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_BASE = process.env.REACT_APP_API_URL;
+
 function CreateProject() {
   return (
     <div className="App">
@@ -114,10 +116,9 @@ const initialValues = {
 function AppForm() {
   const navigate = useNavigate();
   const onSubmitForm = async (formObj) => {
-    const response = await axios.post(
-      "http://localhost:8081/proj/createProject",
-      { ...formObj }
-    );
+    const response = await axios.post(API_BASE + "/proj/createProject", {
+      ...formObj,
+    });
 
     if (response.success) {
       navigate("/home");

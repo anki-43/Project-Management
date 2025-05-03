@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const formidable = require("formidable");
 
+require("dotenv").config();
+
 const session = require("express-session");
 const Redis = require("ioredis");
 const { RedisStore } = require("connect-redis");
@@ -58,6 +60,5 @@ sequelize.sync({ alter: true }).then(
   }
 );
 
-app.listen("8081", () => {
-  console.log("server running at 8081");
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

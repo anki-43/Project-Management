@@ -5,6 +5,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE = process.env.REACT_APP_API_URL;
+
 function Registeruser() {
   let initialValues = {
     username: "",
@@ -38,7 +40,7 @@ function Registeruser() {
 
   async function registerUser(payload) {
     try {
-      const response = await axios.post("http://localhost:8081/user/register", {
+      const response = await axios.post(API_BASE + "/user/register", {
         username: payload.username,
         email: payload.email,
         password: payload.password,

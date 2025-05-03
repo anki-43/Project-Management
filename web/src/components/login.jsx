@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE = process.env.REACT_APP_API_URL;
+
 // Set withCredentials to true for all requests
 // sends cookies alog with every request
 axios.defaults.withCredentials = true;
@@ -35,7 +37,7 @@ function Login() {
 
   async function loginUser(payload) {
     try {
-      const response = await axios.post("http://localhost:8081/user/login", {
+      const response = await axios.post(API_BASE + "/user/login", {
         username: payload.username,
         password: payload.password,
       });

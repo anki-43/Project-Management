@@ -16,13 +16,15 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_BASE = process.env.REACT_APP_API_URL;
+
 function DetailView() {
   const { id } = useParams();
 
   const [project, setProject] = useState({});
 
   const fetchProject = async () => {
-    const response = await axios.post("http://localhost:8081/proj/project", {
+    const response = await axios.post(API_BASE + "/proj/project", {
       id: id,
     });
     console.log(response);

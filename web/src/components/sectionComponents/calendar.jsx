@@ -12,11 +12,9 @@ function CalendarInstance() {
   // const [list, setList] = useState({});
   const [events, setEvents] = useState([]);
   const calendarRef = useRef(null);
-
+  const API_BASE = process.env.REACT_APP_API_URL;
   const fetchList = async () => {
-    const response = await axios.get(
-      "http://localhost:8081/proj/getAppointments"
-    );
+    const response = await axios.get(API_BASE + "/proj/getAppointments");
     if (response.data.status) {
       // setList(response.data.list);
       calculateEvents(response.data.list);

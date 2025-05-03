@@ -34,12 +34,14 @@ import LeftSideBar from "./LeftSideBar";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
+const API_BASE = process.env.REACT_APP_API_URL;
+
 function EditProject() {
   const [currentProject, setProject] = useState({});
   const { id } = useParams();
 
   const fetchProject = async () => {
-    const response = await axios.post("http://localhost:8081/proj/project", {
+    const response = await axios.post(API_BASE + "/proj/project", {
       id: id,
     });
 
@@ -151,10 +153,9 @@ const VisuallyHiddenInput = styled("input")({
 function AppForm(props) {
   const navigate = useNavigate();
   const onSubmitForm = async (formObj) => {
-    const response = await axios.post(
-      "http://localhost:8081/proj/updateProject",
-      { ...formObj }
-    );
+    const response = await axios.post(API_BASE + "/proj/updateProject", {
+      ...formObj,
+    });
     props.setProject(response.data);
 
     if (response.status) {
