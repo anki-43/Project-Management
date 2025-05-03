@@ -19,7 +19,7 @@ const ProjectTeamMember = sequelize.define("ProjectTeamMember", {
     onDelete: "CASCADE",
   },
   userId: {
-    type: Sequelize.DataTypes.UUID,
+    type: Sequelize.UUID,
     references: {
       model: "users", // Table name
       key: "id", // Primary key in the users table

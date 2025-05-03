@@ -103,9 +103,9 @@ const updateProject = async (req, res) => {
     }
 
     const [results, _] = await sequelize.query(
-      "UPDATE projects SET projectName = ?, description = ?, startDate =  ?, endDate = ?, projectManager = ?, budget = ?, teamMembers = ? WHERE id = ?",
+      "UPDATE projects SET projectName = $1, description = $2, startDate =  $3, endDate = $4, projectManager = $5, budget = $6, teamMembers = $7 WHERE id = $8",
       {
-        replacements: [
+        bind: [
           project.projectName,
           project.description,
           project.startDate,
@@ -136,9 +136,9 @@ const updateProject = async (req, res) => {
         let taskExists = await Task.findByPk(task.id);
         if (taskExists) {
           const [taskResult, _] = await sequelize.query(
-            "UPDATE tasks SET name = ?, dueDate = ?, status =  ?, description = ?, assignedTo = ?, priority = ? WHERE id = ?",
+            "UPDATE tasks SET name = $1, dueDate = $2, status =  $3, description = $4, assignedTo = $5, priority = $6 WHERE id = $7",
             {
-              replacements: [
+              bind: [
                 task.name,
                 task.dueDate,
                 task.status,
@@ -154,9 +154,9 @@ const updateProject = async (req, res) => {
           // }
         } else {
           const [taskResult, _] = await sequelize.query(
-            "INSERT INTO tasks (name, dueDate, status, description , assignedTo , priority,  projectId) VALUES(?,?,?,?,?,?,?)",
+            "INSERT INTO tasks (name, dueDate, status, description , assignedTo , priority,  projectId) VALUES($1,$2,$3,$4,$5,$6,$7)",
             {
-              replacements: [
+              bind: [
                 task.name,
                 task.dueDate,
                 task.status,
@@ -183,12 +183,12 @@ const updateProject = async (req, res) => {
     //update/insert milestones
     for (const milestone of project.milestones) {
       try {
-        let milestoneExists = Milestone.findByPk(milestone.id);
+        let milestoneExists = await Milestone.findByPk(milestone.id);
         if (milestoneExists) {
           const [milestoneResult, _] = await sequelize.query(
-            "UPDATE milestones SET name = ?, dueDate = ?, status =  ? WHERE id = ?",
+            "UPDATE milestones SET name = $1, dueDate = $2, status =  $3 WHERE id = $4",
             {
-              replacements: [
+              bind: [
                 milestone.name,
                 milestone.dueDate,
                 milestone.status,
@@ -201,9 +201,9 @@ const updateProject = async (req, res) => {
           // }
         } else {
           const [milestoneResult, _] = await sequelize.query(
-            "INSERT INTO milestones (name, dueDate, status, projectId) VALUES(?,?,?,?)",
+            "INSERT INTO milestones (name, dueDate, status, projectId) VALUES($1,$2,$3,$4)",
             {
-              replacements: [
+              bind: [
                 milestone.name,
                 milestone.dueDate,
                 milestone.status,
@@ -227,12 +227,12 @@ const updateProject = async (req, res) => {
     //update/insert risks
     for (const risk of project.risks) {
       try {
-        let riskExists = Risk.findByPk(risk.id);
+        let riskExists = await Risk.findByPk(risk.id);
         if (riskExists) {
           const [riskResult, _] = await sequelize.query(
-            "UPDATE risks SET description = ?, mitigationPlan = ?, impact =  ? WHERE id = ?",
+            "UPDATE risks SET description = $1, mitigationPlan = $2, impact =  $3 WHERE id = $4",
             {
-              replacements: [
+              bind: [
                 risk.description,
                 risk.mitigationPlan,
                 risk.impact,
@@ -245,9 +245,9 @@ const updateProject = async (req, res) => {
           // }
         } else {
           const [riskResult, _] = await sequelize.query(
-            "INSERT INTO risks (description, mitigationPlan, impact, projectId) VALUES(?,?,?,?)",
+            "INSERT INTO risks (description, mitigationPlan, impact, projectId) VALUES($1,$2,$3,$4)",
             {
-              replacements: [
+              bind: [
                 risk.description,
                 risk.mitigationPlan,
                 risk.impact,

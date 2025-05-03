@@ -5,7 +5,7 @@ const Project = require("./project");
 
 const User = sequelize.define("user", {
   id: {
-    type: Sequelize.DataTypes.UUID,
+    type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
     allowNull: false,
     primaryKey: true,
